@@ -68,9 +68,7 @@ BasicGame.Game.prototype = {
 		this.map = this.add.sprite(0,0,'map');
 		////Roads
 		this.road1 = this.add.sprite(65,250,'road');
-		//this.road2 = this.add.sprite(170,300,'road');
 		this.road1.scale.setTo(.17);
-		//this.road2.scale.setTo(.17);
 		this.road3 = this.add.sprite(225,160,'road');
 		this.road3.scale.setTo(.17);
 		
@@ -101,6 +99,7 @@ BasicGame.Game.prototype = {
 			this.plots.children[i].scale.set(.23);
 			this.plots.children[i].anchor.set(.5,.5);
 			this.plots.children[i].inputEnabled = true;
+			//this.plots.children[i].input.pixelPerfectOver = true;
 			if(i<6){
 				this.plots.children[i].health = 1;
 			}else if(i<9){
@@ -252,10 +251,8 @@ BasicGame.Game.prototype = {
 				this.holding.destroy();
 				this.holding = null;
 				for(var i=6;i<11;i++){
-					if(this.plots.children[i].health != -1){
-						this.plotTween[i].pause();
-						this.plots.children[i].scale.setTo(.23);
-					}
+					this.plotTween[i].pause();
+					this.plots.children[i].scale.setTo(.23);
 				}
 				for(var i=0;i<6;i++){
 					if(this.plots.children[i].health != -1){
@@ -368,8 +365,6 @@ BasicGame.Game.prototype = {
 		this.blackScreen.alpha = 0;
 		this.blackScreen.scale.setTo(2);
 		
-		
-		
 		this.gameOverBox = this.add.sprite(400,300,'gameover');
 		this.gameOverBox.anchor.setTo(.5,.5);
 		this.gameOverBox.scale.setTo(.5);
@@ -417,9 +412,12 @@ BasicGame.Game.prototype = {
 		},this);
 		
 		////Text lines
-		this.tooltipBox = this.add.sprite(400,900,'tooltip')
+		this.tooltipBox = this.add.sprite(400,900,'tooltip');
+		//this.tooltipBox.inputEnabled = true;
+		//this.tooltipBox.onInputUp.add(this.closeTipBox(),this);
+		this.tooltipActive = false;
 		
-		style = {font:"24px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2}
+		style = {font:"24px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
 		
 		this.introText = this.add.text(400,900,'We\'re under attack! Build a tower to defend against the enemy troops.', style);
 		this.tutorialText2 = this.add.text(400,900,'We\'re under attack! Build a tower to defend against the enemy troops.', style);
@@ -428,10 +426,10 @@ BasicGame.Game.prototype = {
 		this.wallText = this.add.text(400,900,'Hurry! Upgrade your wall to repair it!', style);
 		this.barracksText = this.add.text(400,900,'The barracks train guards that stop approaching enemies in their tracks.', style);
 		this.upgradeText = this.add.text(400,900,'Tap on structures marked with the arrow to upgrade their abilities.', style);
-		this.gameOverText = this.add.text(400,170, 'YOU LOST! INSTALL GAME OF WAR* AND BUILD YOUR EMPIRE IN THIS REAL TIME GAME OF GLOBAL CONQUEST.', style);
+		this.gameOverText = this.add.text(400,180, 'YOU LOST! INSTALL GAME OF WAR* AND BUILD YOUR EMPIRE IN THIS REAL TIME GAME OF GLOBAL CONQUEST.', style);
 		this.gameOverText.anchor.setTo(.5,.5);
 		this.gameOverText.kill();
-		this.timeUpText = this.add.text(400,170,'TIME\'S UP! INSTALL GAME OF WAR* AND BUILD YOUR EMPIRE IN THIS REAL TIME GAME OF GLOBAL CONQUEST', style);
+		this.timeUpText = this.add.text(400,180,'TIME\'S UP! INSTALL GAME OF WAR* AND BUILD YOUR EMPIRE IN THIS REAL TIME GAME OF GLOBAL CONQUEST', style);
 		this.timeUpText.anchor.setTo(.5,.5);
 		this.timeUpText.kill();
 		
@@ -466,6 +464,7 @@ BasicGame.Game.prototype = {
 		
 		//Tutorial Check
 		if(this.inTutorial){
+			//Check if first text box has played
 		}else if(!this.gameEnded){
 			//Menu Update
 			this.menuUpdate();
@@ -483,6 +482,31 @@ BasicGame.Game.prototype = {
 			this.gold += 1;
 		}
     },
+	
+	openTipBox: function(){
+		//Have box move into the screen
+		if(!this.tooltipActive){
+			if(this.landScape){
+				
+			}else{
+				
+			}
+			//Hide all text
+			for(i=0;i<tooltipBox.children.length;i++){
+				this.tooltipBox.children[textIndex].revive();
+			}
+		}
+	},
+	
+	closeTipBox: function(textIndex){
+		//Move out of the screen based on orientation
+		this.tooltipBox.children[textIndex].revive();
+		
+		//Move out of the screen based on orientation
+		if(this.landScape){
+		}else{
+		}
+	},
 	
 	menuUpdate: function() {
 		//Check to determine if items can be purchased
@@ -563,6 +587,7 @@ BasicGame.Game.prototype = {
 					//Check if structures are upgradable
 					temp.inputEnabled = true;
 					temp.input.pixelPerfectClick = true;
+					temp.input.pixelPerfectOver = true;
 					temp.events.onInputUp.add(function(thing){
 						if(this.gold/100 >= thing.health && thing.frame < 2 && thing.input.pointerOver()){
 							temp = this.add.sprite(thing.x,thing.y,'upgradeAnim');
@@ -590,7 +615,8 @@ BasicGame.Game.prototype = {
 					temp = this.structures.create(this.plots.children[i].x,this.plots.children[i].y,this.holding.key);
 					temp.z = this.plots.children[i].z;
 					temp.inputEnabled = true;
-					temp.input.pixelPerfectClick = true;
+					//temp.input.pixelPerfectClick = true;
+					temp.input.pixelPerfectOver = true;
 					temp.anchor.setTo(.5,.65);
 					temp.scale.setTo(.3);
 					this.camera.shake(0.005,125,true,Phaser.Camera.SHAKE_BOTH,true);
@@ -643,6 +669,7 @@ BasicGame.Game.prototype = {
 					//Check if structures are upgradable
 					temp.inputEnabled = true;
 					temp.input.pixelPerfectClick = true;
+					temp.input.pixelPerfectOver = true;
 					temp.events.onInputUp.add(function(thing){
 						if(this.gold/100 >= thing.health && thing.frame < 2 && thing.input.pointerOver()){
 							temp = this.add.sprite(thing.x,thing.y,'upgradeAnim');
@@ -864,7 +891,7 @@ BasicGame.Game.prototype = {
 			cannonball.kill();
 			enemy.damage(25);
 		},this,tower.children[0]);
-		this.time.events.add(3200/(tower.frame+1), function(){
+		this.time.events.add(2200/(tower.frame+1), function(){
 			//Reset health to refire
 			tower.children[0].health = -1;
 		},this);
@@ -877,7 +904,7 @@ BasicGame.Game.prototype = {
 			dx = tower.x - this.enemies.children[i].x;
 			dy = tower.y - this.enemies.children[i].y;
 			dist = Math.sqrt((dx*dx)+(dy*dy));
-			if(dist < smallestDistance && dist < 150){
+			if(dist < smallestDistance && dist < 200){
 				smallestDistance = dist;
 				closest = this.enemies.children[i];
 			}
@@ -917,12 +944,12 @@ BasicGame.Game.prototype = {
 			this.wallGreen.y = 100;
 			this.wallRed.x = 450;
 			this.wallRed.y = 100;
-			this.gameOverBox.y += 150;
-			this.gameOverText.y += 150;
-			this.timeUpText.y += 150;
+			this.gameOverBox.y = 450;
+			this.gameOverText.y = 330;
+			this.timeUpText.y = 330;
 			this.closeButton.x += 100;
-			this.tryAgain.y += 150;
-			this.getApp.y += 150;
+			this.tryAgain.y = 500;
+			this.getApp.y = 600;
 		}else if((window.innerWidth/window.innerHeight) > (3/4) && !this.landscape){
 			this.camera.setPosition(0,0);
 			this.landscape = true;
@@ -943,12 +970,12 @@ BasicGame.Game.prototype = {
 			this.wallGreen.y = 50;
 			this.wallRed.x = 550;
 			this.wallRed.y = 50;
-			this.gameOverBox.y -= 150;
-			this.gameOverText.y -= 150;
-			this.timeUpText.y -= 150;
-			this.closeButton.x -= 100;
-			this.tryAgain.y -= 150;
-			this.getApp.y -= 150;
+			this.gameOverBox.y = 300;
+			this.gameOverText.y = 180;
+			this.timeUpText.y = 180;
+			this.closeButton.x = 150;
+			this.tryAgain.y = 350;
+			this.getApp.y = 450;
 		}
 	},
 	
