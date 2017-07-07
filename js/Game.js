@@ -436,7 +436,7 @@ BasicGame.Game.prototype = {
 		
 		
 		////Set initial stats
-		this.gold = 10000;
+		this.gold = 1000000;
 		this.wallHP = 50;
 		this.inTutorial = false;
 		this.played = false;
