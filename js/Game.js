@@ -63,8 +63,6 @@ BasicGame.Game.prototype = {
 		}else{
 			this.landscape = false;
 		}
-		//Start physics engine
-		this.physics.startSystem(Phaser.Physics.ARCADE);
 		
 		//Background
 		this.map = this.add.sprite(0,0,'map');
@@ -565,7 +563,6 @@ BasicGame.Game.prototype = {
 					//Check if structures are upgradable
 					temp.inputEnabled = true;
 					temp.input.pixelPerfectClick = true;
-					temp.input.pixelPerfectOver = true;
 					temp.events.onInputUp.add(function(thing){
 						if(this.gold/100 >= thing.health && thing.frame < 2 && thing.input.pointerOver()){
 							temp = this.add.sprite(thing.x,thing.y,'upgradeAnim');
@@ -594,7 +591,6 @@ BasicGame.Game.prototype = {
 					temp.z = this.plots.children[i].z;
 					temp.inputEnabled = true;
 					temp.input.pixelPerfectClick = true;
-					temp.input.pixelPerfectOver = true;
 					temp.anchor.setTo(.5,.65);
 					temp.scale.setTo(.3);
 					this.camera.shake(0.005,125,true,Phaser.Camera.SHAKE_BOTH,true);
@@ -635,7 +631,6 @@ BasicGame.Game.prototype = {
 					temp.children[0].anchor.setTo(.5,.5);
 					temp.children[0].scale.setTo(.2);
 					temp.children[0].kill();
-					this.physics.arcade.enable(temp.children[0]);
 					//Upgrade Arrow
 					temp.addChild(this.add.sprite(-175,-150,'upgrade'));
 					temp.children[1].addChild(this.add.text(0,0,temp.health));
@@ -648,7 +643,6 @@ BasicGame.Game.prototype = {
 					//Check if structures are upgradable
 					temp.inputEnabled = true;
 					temp.input.pixelPerfectClick = true;
-					temp.input.pixelPerfectOver = true;
 					temp.events.onInputUp.add(function(thing){
 						if(this.gold/100 >= thing.health && thing.frame < 2 && thing.input.pointerOver()){
 							temp = this.add.sprite(thing.x,thing.y,'upgradeAnim');
