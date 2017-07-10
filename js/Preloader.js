@@ -1,8 +1,10 @@
 BasicGame.Preloader = function (game) {
-
-	this.background = null;
+	this.preloaderOption = 3;
+	
 	this.loading = null;
 	this.pleaseWait = null;
+	this.spokeCircle = null;
+	this.solidCircle = null;
 	this.preloadBar = null;
 	this.preloadBarFill = null;
 
@@ -13,12 +15,24 @@ BasicGame.Preloader = function (game) {
 BasicGame.Preloader.prototype = {
 
 	preload: function () {
-		//Preloader Sprites
-		this.preloadBar = this.add.sprite(175, 200, 'preloaderBar');
-		this.preloadBarFill = this.add.sprite(175, 200, 'preloaderBarFill');
-		this.load.setPreloadSprite(this.preloadBarFill);
-		this.loading = this.add.sprite(400,385,'loading');
-		this.loading.anchor.setTo(.5,.5);
+		//Preloader Sprites based on option
+		if(this.preloaderOption < 3){
+			this.spokeCircle = this.add.sprite(175,200, 'preloaderSpokeCircle');
+			if(this.preloaderOption == 2){
+				this.pleaseWait = this.add.sprite(400,385,'preloaderPleaseWait');
+			}
+		}else if(this.preloaderOption == 3){
+			this.solidCircle = this.add.sprite(400,300,'preloaderSolidCircle');
+			this.solidCircle.anchor.setTo(.5,.5);
+		}else{
+			this.preloadBar = this.add.sprite(175, 200, 'preloaderBar');
+			this.preloadBarFill = this.add.sprite(175, 200, 'preloaderBarFill');
+			this.load.setPreloadSprite(this.preloadBarFill);
+			if(this.preloaderOption == 5){
+				this.loading = this.add.sprite(400,385,'preloaderLoading');
+				this.loading.anchor.setTo(.5,.5);
+			}
+		}
 
 		//Game Sprites
 		//Terrain
@@ -73,10 +87,25 @@ BasicGame.Preloader.prototype = {
 	create: function () {
 
 		//	Once the load has finished we disable the crop because we're going to sit in the update loop for a short while as the music decodes
-		this.preloadBar.cropEnabled = false;
+		if(this.preloadBarFill != null){
+			this.preloadBarFill.cropEnabled = false;
+		}
 		
-		//Start Game
-		this.state.start('Game');
+		
 
+	},
+	
+	update: function () {
+		if(this.spokeCircle != null){
+			this.spokeCircle.angle += 3;
+		}else if(this.solidCircle != null){
+			this.solidCircle.angle += 3;
+		}
+		
+		if(this.ready ==false){
+			this.reade = true;
+			//Start Game
+			this.state.start('Game');
+		}
 	}
 };
