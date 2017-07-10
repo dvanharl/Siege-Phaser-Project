@@ -93,20 +93,22 @@ BasicGame.Preloader.prototype = {
 		if(this.preloadBarFill != null){
 			this.preloadBarFill.cropEnabled = false;
 		}
-		this.load.onLoadComplete.addOnce(this.startGame,this);
-		//
+		
+		//this.state.start('Game');
 	},
 	
 	loadUpdate: function () {
 		//Animate any existing circles
-		if(this.spokeCircle != null){
-			this.spokeCircle.angle += 6;
-		}else if(this.solidCircle != null){
-			this.solidCircle.angle += 6;
+		
+		
+		if(this.load.progress != 100){
+			if(this.spokeCircle != null){
+				this.spokeCircle.angle += 6;
+			}else if(this.solidCircle != null){
+				this.solidCircle.angle += 6;
+			}
+		}else{
+			this.state.start('Game');
 		}
-	},
-	
-	startGame: function() {
-		this.state.start('Game');
 	}
 };
