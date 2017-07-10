@@ -1,8 +1,10 @@
-
 BasicGame.Preloader = function (game) {
 
 	this.background = null;
+	this.loading = null;
+	this.pleaseWait = null;
 	this.preloadBar = null;
+	this.preloadBarFill = null;
 
 	this.ready = false;
 
@@ -12,8 +14,11 @@ BasicGame.Preloader.prototype = {
 
 	preload: function () {
 		//Preloader Sprites
-		////this.preloadBar = this.add.sprite(300, 400, 'preloaderBar');
-		////this.load.setPreloadSprite(this.preloadBar);
+		this.preloadBar = this.add.sprite(175, 200, 'preloaderBar');
+		this.preloadBarFill = this.add.sprite(175, 200, 'preloaderBarFill');
+		this.load.setPreloadSprite(this.preloadBarFill);
+		this.loading = this.add.sprite(400,385,'loading');
+		this.loading.anchor.setTo(.5,.5);
 
 		//Game Sprites
 		//Terrain
@@ -68,7 +73,7 @@ BasicGame.Preloader.prototype = {
 	create: function () {
 
 		//	Once the load has finished we disable the crop because we're going to sit in the update loop for a short while as the music decodes
-		//this.preloadBar.cropEnabled = false;
+		this.preloadBar.cropEnabled = false;
 		
 		//Start Game
 		this.state.start('Game');

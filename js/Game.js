@@ -1,5 +1,20 @@
 
 BasicGame.Game = function (game) {
+	//Transfered Game Settings
+	this.preloader = null;
+	this.banner = null;
+	this.hide_countdown_close_button_on_first_action = null;
+	this.hideCloseButtonTime = null;
+	this.countDownCloseButton = null;
+	this.preloaderStartCountdown = null;
+	this.didInteractTimeLimit = null;
+	this.didInteractTimeLimitEnabled = null;
+	this.preloader_logo = null;
+	this.preloader_option = null;
+	this.preloader_text_option = null;
+	
+	
+	//Game
 	this.map = null;
 	
 	this.palace = null;
@@ -56,6 +71,16 @@ BasicGame.Game = function (game) {
 };
 
 BasicGame.Game.prototype = {
+	/*init: function () {
+		this.banner;
+		this.hide_countdown_close_button_on_first_action;
+		this.hideCloseButtonTime;
+		this.countDownCloseButton;
+		this.didInteractTimeLimit;
+		this.didInteractTimeLimitEnabled;
+		
+	},*/
+	
     create: function () {
 		this.world.setBounds(0,0,2000,2000);
 		if((window.innerWidth/window.innerHeight) <= (3/4)){
@@ -339,6 +364,7 @@ BasicGame.Game.prototype = {
 			this.menu.children[i+4].anchor.setTo(.5,.5);
 			this.menu.children[i].scale.setTo(.16);
 			this.menu.children[i].tint = 0xbfbfbf;
+			this.menu.children[i].addChild(this.add.text(0,0,this.menu.children[i].health));
 		}
 		this.menu.children[6].anchor.setTo(.45,.62);
 		this.menu.children[7].anchor.setTo(.52,.5);
@@ -433,7 +459,13 @@ BasicGame.Game.prototype = {
 		this.timeUpText.anchor.setTo(.5,.5);
 		this.timeUpText.kill();
 		
-		
+		////Turorial Hand
+		this.hand = this.add.sprite(this.menu.children[0].x,this.menu.children[0].y,'hand');
+		this.hand.alpha = 0;
+		this.handAppear = this.add.tween(this.hand).to({alpha:1}, 500, Phaser.Easing.Linear.None, 0, 0, false);
+		this.handMove1 = this.add.tween(this.hand).to({x:this.plots.children[6].x,y:this.plots.children[6].y},1750,Phaser.Easing.Linear.None,0,0,false);
+		this.handMove2 = this.add.tween(this.hand).to({x:this.plots.children[5].x,y:this.plots.children[5].y},1750,Phaser.Easing.Linear.None,0,0,false);
+		this.handDisappear = this.add.tween(this.hand).to({alpha:0}, 500, Phaser.Easing.Linear.None, 0, 0, false);
 		
 		////Set initial stats
 		this.gold = 1000000;
@@ -448,12 +480,17 @@ BasicGame.Game.prototype = {
 		this.enemyTimer = this.time.events.loop(5000, function() {
 			this.enemySpawn();
 		},this);
-		this.time.events.start();
 		
 		//Set timer to game over
 		this.gameTimer = this.time.events.add(60000,function(){
 			this.gameOver();
 		},this);
+		
+		if(!this.inTutorial){
+			this.time.events.start();
+		}else{
+			this.enterTutorial();
+		}
     },
 
     update: function () {
@@ -482,6 +519,65 @@ BasicGame.Game.prototype = {
 			this.gold += 1;
 		}
     },
+	
+	enterTutorial: function(){
+		//Make all but watchtower purchasable
+		this.menu.children[0].health = 9999999999999;
+		this.menu.children[1].health = 9999999999999;
+		this.menu.children[3].health = 9999999999999;
+		//Make all but specific plot available to place
+		for(i=0;i<11;i++){
+			if(i != 6){
+				this.plots.children[i].health = -1;
+				this.plots.children[i].alpha = .4;
+			}
+		}
+	},
+	
+	tutorialUpdate: function(){
+	},
+	
+	checkTutorial: function(){
+		
+		if(this.structures.children.length == 0){			
+			//If not holding anything, animate hand
+			
+		}else if(this.structures.children.length == 1){
+			//If watchtower is placed, make all but goldmine purchasable
+			this.plots.children[5].health = 0;
+			this.plots.children[5].alpha = 1;
+			this.menu.children[0].health = 9999999999999;
+			this.menu.children[1].health = 30;
+			
+			//If not holding anything, animate hand
+			if(this.holding == null){
+			}else{
+				this.hand
+			}
+		}else{
+			this.exitTutorial();
+		}
+			
+	},
+	
+	exitTutorial: function(){
+		//Return menu costs to original values
+		this.menu.children[0].health = 20;
+		this.menu.children[1].health = 30;
+		this.menu.children[2].health = 40;
+		this.menu.children[3].health = 50;
+		
+		//Make all other plots available to use
+		for(i=0;i<11;i++){
+			if(i != 5||i != 6){
+				this.plots.children[i].health = 0;
+			}
+		}
+		
+		//Signal game to begin
+		this.inTutorial = false;
+		this.time.events.start();
+	},
 	
 	openTipBox: function(){
 		//Have box move into the screen
