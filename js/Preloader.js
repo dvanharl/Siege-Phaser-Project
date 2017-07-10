@@ -1,5 +1,5 @@
 BasicGame.Preloader = function (game) {
-	this.preloaderOption = 4;
+	this.preloaderOption = 2;
 	
 	this.loading = null;
 	this.pleaseWait = null;
