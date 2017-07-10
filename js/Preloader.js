@@ -17,7 +17,8 @@ BasicGame.Preloader.prototype = {
 	preload: function () {
 		//Preloader Sprites based on option
 		if(this.preloaderOption < 3){
-			this.spokeCircle = this.add.sprite(175,200, 'preloaderSpokeCircle');
+			this.spokeCircle = this.add.sprite(400,400, 'preloaderSpokeCircle');
+			this.spokeCircle.anchor.setTo(.5,.5);
 			if(this.preloaderOption == 2){
 				this.pleaseWait = this.add.sprite(400,385,'preloaderPleaseWait');
 			}
@@ -82,6 +83,8 @@ BasicGame.Preloader.prototype = {
 		this.load.image('blackScreen','assets/UI/blackscreen.png');
 		this.load.image('buttonInstallNow','assets/UI/button-install-now.png');
 		this.load.spritesheet('purchaseFrame','assets/UI/purchase-frame.png',800,780,2);
+		
+		
 	},
 
 	create: function () {
@@ -92,19 +95,20 @@ BasicGame.Preloader.prototype = {
 		}
 		
 		
+			
 
 	},
 	
 	update: function () {
+		//Animate any existing circles
 		if(this.spokeCircle != null){
-			this.spokeCircle.angle += 3;
+			this.spokeCircle.angle += 6;
 		}else if(this.solidCircle != null){
-			this.solidCircle.angle += 3;
+			this.solidCircle.angle += 6;
 		}
 		
-		if(this.ready ==false){
-			this.reade = true;
-			//Start Game
+		//Start game once loaded
+		if(!this.load.isLoading){
 			this.state.start('Game');
 		}
 	}
