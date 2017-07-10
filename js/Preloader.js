@@ -1,5 +1,5 @@
 BasicGame.Preloader = function (game) {
-	this.preloaderOption = 1;
+	this.preloaderOption = 4;
 	
 	this.loading = null;
 	this.pleaseWait = null;
@@ -17,8 +17,8 @@ BasicGame.Preloader.prototype = {
 	preload: function () {
 		//Preloader Sprites based on option
 		if(this.preloaderOption < 3){
-			this.spokeCircle = this.add.sprite(410,400, 'preloaderSpokeCircle');
-			this.spokeCircle.anchor.setTo(.5,.5);
+			this.spokeCircle = this.add.sprite(400,480, 'preloaderSpokeCircle');
+			this.spokeCircle.anchor.setTo(.5,.8);
 			if(this.preloaderOption == 1){
 				this.pleaseWait = this.add.sprite(400,385,'preloaderPleaseWait');
 				this.pleaseWait.anchor.setTo(.5,.5);
@@ -85,7 +85,6 @@ BasicGame.Preloader.prototype = {
 		this.load.image('buttonInstallNow','assets/UI/button-install-now.png');
 		this.load.spritesheet('purchaseFrame','assets/UI/purchase-frame.png',800,780,2);
 		
-		
 	},
 
 	create: function () {
@@ -95,19 +94,23 @@ BasicGame.Preloader.prototype = {
 			this.preloadBarFill.cropEnabled = false;
 		}
 		
+		this.state.start('Game');
 	},
 	
 	update: function () {
 		//Animate any existing circles
-		if(this.spokeCircle != null){
-			this.spokeCircle.angle += 6;
-		}else if(this.solidCircle != null){
-			this.solidCircle.angle += 6;
-		}
 		
-		//Start game once loaded
-		if(this.load.hasLoaded){
-			this.state.start('Game');
+		
+		if(this.load.progress != 100){
+			if(this.spokeCircle != null){
+				this.spokeCircle.angle += 6;
+			}else if(this.solidCircle != null){
+				this.solidCircle.angle += 6;
+			}
 		}
+	},
+	
+	render: function() {
+		this.game.debug.text(this.load.progress,100,100);
 	}
 };
