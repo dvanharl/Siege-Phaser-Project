@@ -1,5 +1,6 @@
 BasicGame.Preloader = function (game) {
-	this.preloaderOption = 2;
+	this.preloader = true;
+	this.preloaderOption = 4;
 	
 	this.loading = null;
 	this.pleaseWait = null;
@@ -16,23 +17,25 @@ BasicGame.Preloader.prototype = {
 
 	preload: function () {
 		//Preloader Sprites based on option
-		if(this.preloaderOption < 3){
-			this.spokeCircle = this.add.sprite(400,480, 'preloaderSpokeCircle');
-			this.spokeCircle.anchor.setTo(.5,.8);
-			if(this.preloaderOption == 1){
-				this.pleaseWait = this.add.sprite(400,385,'preloaderPleaseWait');
-				this.pleaseWait.anchor.setTo(.5,.5);
-			}
-		}else if(this.preloaderOption == 3){
-			this.solidCircle = this.add.sprite(400,300,'preloaderSolidCircle');
-			this.solidCircle.anchor.setTo(.5,.5);
-		}else{
-			this.preloadBar = this.add.sprite(175, 200, 'preloaderBar');
-			this.preloadBarFill = this.add.sprite(175, 200, 'preloaderBarFill');
-			this.load.setPreloadSprite(this.preloadBarFill);
-			if(this.preloaderOption == 5){
-				this.loading = this.add.sprite(400,385,'preloaderLoading');
-				this.loading.anchor.setTo(.5,.5);
+		if(this.preloader){
+			if(this.preloaderOption < 3){
+				this.spokeCircle = this.add.sprite(400,480, 'preloaderSpokeCircle');
+				this.spokeCircle.anchor.setTo(.5,.8);
+				if(this.preloaderOption == 1){
+					this.pleaseWait = this.add.sprite(400,385,'preloaderPleaseWait');
+					this.pleaseWait.anchor.setTo(.5,.5);
+				}
+			}else if(this.preloaderOption == 3){
+				this.solidCircle = this.add.sprite(400,300,'preloaderSolidCircle');
+				this.solidCircle.anchor.setTo(.5,.5);
+			}else{
+				this.preloadBar = this.add.sprite(175, 200, 'preloaderBar');
+				this.preloadBarFill = this.add.sprite(175, 200, 'preloaderBarFill');
+				this.load.setPreloadSprite(this.preloadBarFill);
+				if(this.preloaderOption == 5){
+					this.loading = this.add.sprite(400,385,'preloaderLoading');
+					this.loading.anchor.setTo(.5,.5);
+				}
 			}
 		}
 
@@ -88,27 +91,19 @@ BasicGame.Preloader.prototype = {
 	},
 
 	create: function () {
-
-		//	Once the load has finished we disable the crop because we're going to sit in the update loop for a short while as the music decodes
-		if(this.preloadBarFill != null){
+		/*if(this.preloadBarFill != null){
 			this.preloadBarFill.cropEnabled = false;
-		}
+		}*/
 		
-		//this.state.start('Game');
+		this.state.start('Game');
 	},
 	
 	loadUpdate: function () {
 		//Animate any existing circles
-		
-		
-		if(this.load.progress != 100){
-			if(this.spokeCircle != null){
-				this.spokeCircle.angle += 6;
-			}else if(this.solidCircle != null){
-				this.solidCircle.angle += 6;
-			}
-		}else{
-			this.state.start('Game');
+		if(this.spokeCircle != null){
+			this.spokeCircle.angle += 6;
+		}else if(this.solidCircle != null){
+			this.solidCircle.angle += 6;
 		}
 	}
 };

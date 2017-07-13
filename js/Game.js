@@ -557,7 +557,6 @@ BasicGame.Game.prototype = {
 		}else{
 			this.exitTutorial();
 		}
-			
 	},
 	
 	exitTutorial: function(){
