@@ -393,7 +393,7 @@ BasicGame.Game.prototype = {
 		////Icons
 		//////Goldmine
 		this.menu.create(this.menu.children[0].x,this.menu.children[0].y,'goldmineRed');
-		this.menu.children[4].scale.setTo(.1);
+		//this.menu.children[4].scale.setTo(.1);
 		this.iconMine = this.add.tween(this.menu.children[4].scale).to({x:.09,y:.09},500,Phaser.Easing.Linear.None,false,0,-1,true);
 		//////Barracks
 		this.menu.create(this.menu.children[1].x,this.menu.children[1].y,'barracksRed');
@@ -899,7 +899,7 @@ BasicGame.Game.prototype = {
 					temp = this.structures.create(this.plots.children[i].x,this.plots.children[i].y,this.holding.key);
 					temp.z = this.plots.children[i].z;
 					temp.anchor.setTo(.5,.55);
-					temp.scale.setTo(.15);
+					temp.scale.setTo(1.5);
 					temp.health = 10;
 					this.camera.shake(0.005,125,true,Phaser.Camera.SHAKE_BOTH,true);
 					//Upgrade Arrow
