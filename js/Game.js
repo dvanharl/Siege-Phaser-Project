@@ -443,7 +443,7 @@ BasicGame.Game.prototype = {
 		this.tooltipBox.inputEnabled = true;
 		this.tooltipBox.events.onInputDown.add(this.closeTipBox,this);
 		this.tooltipActive = false;
-		
+		this.hand = this.add.sprite(this.menu.children[0].x,this.menu.children[0].y,'hand');
 		//Game Over
 		this.defeat = this.add.sprite(400,300,'defeat');
 		this.defeat.anchor.setTo(.5,.5);
@@ -542,7 +542,7 @@ BasicGame.Game.prototype = {
 		}
 		
 		////Turorial Hand
-		this.hand = this.add.sprite(this.menu.children[0].x,this.menu.children[0].y,'hand');
+		
 		this.hand.anchor.setTo(.8,.8);
 		this.hand.scale.setTo(.5);
 		this.hand.alpha = 0;
@@ -781,6 +781,8 @@ BasicGame.Game.prototype = {
 			this.plots.children[this.tutorialPlots[i]].health = -1;
 			this.plots.children[this.tutorialPlots[i]].alpha = .4;
 		}
+		
+		this.hand.alpha = 0;
 		
 		//Signal game to begin
 		this.inTutorial = false;
@@ -1361,6 +1363,7 @@ BasicGame.Game.prototype = {
 				this.structures.children[i].children[0].animations.stop();
 			}
 		}
+		this.hand.alpha = 0;
 		
 		
 		//Dim screen
