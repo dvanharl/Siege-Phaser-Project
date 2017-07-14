@@ -1,6 +1,7 @@
 
 BasicGame.Game = function (game) {
 	//Transfered Game Settings
+	this.siteLink = "http://www.google.com"
 	this.preloader = null;
 	this.banner = null;
 	this.hide_countdown_close_button_on_first_action = null;
@@ -12,9 +13,14 @@ BasicGame.Game = function (game) {
 	this.preloader_logo = null;
 	this.preloader_option = null;
 	this.preloader_text_option = null;
+	this.tipClass = 0;
 	
 	
 	//Game
+	this.tutorialStructures = null;
+	this.tutorialPlots = null;
+	this.stage = null;
+	
 	this.map = null;
 	
 	this.palace = null;
@@ -30,6 +36,7 @@ BasicGame.Game = function (game) {
 	this.goldUI = 0;
 	this.gold = 0;
 	this.menu = null;
+	this.menuText = null;
 	
 	this.structures = null;
 	this.plots = null;
@@ -38,6 +45,7 @@ BasicGame.Game = function (game) {
 	this.enemies = null;
 	this.enemySpeed = null;
 	this.enemiesSpawned = 0;
+	this.enemiesKilled = 0;
 	
 	this.inTutorial= true;
 	this.played = false;
@@ -68,6 +76,17 @@ BasicGame.Game = function (game) {
 	this.enemyTimer = null;
 	this.landscape = null;
 	this.gameTimer = null;
+	
+	this.firstGold = null;
+	this.firstBarracks = null;
+	this.firstWatchtower = null;
+	this.firstWall = null;
+	this.firstUpgrade = null;
+	
+	this.tipBoxOpenLandscape = null;
+	this.tipBoxCloseLandscape = null;
+	this.tipBoxOpenPortrait = null;
+	this.tipBoxClosePortrait = null;
 };
 
 BasicGame.Game.prototype = {
@@ -89,6 +108,9 @@ BasicGame.Game.prototype = {
 			this.landscape = false;
 		}
 		
+		this.timeMultiplier = 1;
+		this.tipClass = 0;
+		
 		//Background
 		this.map = this.add.sprite(0,0,'map');
 		////Roads
@@ -99,7 +121,7 @@ BasicGame.Game.prototype = {
 		
 		
 		//Initial Structures - Palace and Wall
-		this.palace = this.add.sprite(25,75,'palaceRed');
+		this.palace = this.add.sprite(50,100,'palaceRed');
 		this.palace.scale.setTo(.17);
 		this.palace.anchor.setTo(.5,.5);
 		this.wall3 = this.add.sprite(450,26,'wall-a');
@@ -196,7 +218,7 @@ BasicGame.Game.prototype = {
 		this.goldUI = this.add.sprite(150,100,'gold');
 		this.goldUI.anchor.setTo(.5,.5);
 		this.goldUI.scale.setTo(.25);
-		this.goldText = this.add.text(120,0,""+(this.gold/100));
+		this.goldText = this.add.text(120,5,""+(this.gold/100),{fill:"black"});
 		this.goldText.anchor.setTo(.5,.5);
 		this.goldText.scale.setTo(4);
 		this.goldUI.addChild(this.goldText);
@@ -206,13 +228,23 @@ BasicGame.Game.prototype = {
 		
 		//Menu
 		this.menu = this.add.group();
+		this.firstGold = true;
+		this.firstBarracks = true;
+		this.firstWatchtower = true;
+		this.firstWall = true;
+		this.firstUpgrade = true;
+		
 		////Boxes
 		//////Goldmine
-		this.menu.create(75,220,'purchaseFrame',0);
+		this.menu.create(65,220,'purchaseFrame',0);
 		this.menu.children[0].health = 20;
 		this.menu.children[0].inputEnabled = true;
 		this.menu.children[0].events.onInputDown.add(function(){
-			if(this.menu.children[0].frame == 1){
+			if(this.menu.children[0].frame == 1 && !this.gameEnded){
+				if(this.firstGold){
+					this.firstGold = false;
+					this.openTipBox(1);
+				}
 				this.holding = this.add.sprite(this.input.mousePointer.x,this.input.mousePointer.y,'goldmineRed');
 				this.holding.health = 20;
 				this.holding.anchor.setTo(.5,.5);
@@ -238,6 +270,9 @@ BasicGame.Game.prototype = {
 						this.plots.children[i].scale.setTo(.23);
 					}
 				}
+				if(this.toolTipActive){
+					this.closeTipBox();
+				}
 				this.placeStructure();
 				this.holding.destroy();
 				this.holding = null;
@@ -249,11 +284,15 @@ BasicGame.Game.prototype = {
 			}
 		},this);
 		//////Barracks
-		this.menu.create(75,325,'purchaseFrame',0);
+		this.menu.create(65,325,'purchaseFrame',0);
 		this.menu.children[1].health = 30;
 		this.menu.children[1].inputEnabled = true;
 		this.menu.children[1].events.onInputDown.add(function(){
-			if(this.menu.children[1].frame == 1){
+			if(this.menu.children[1].frame == 1 && !this.gameEnded){
+				if(this.firstBarracks){
+					this.firstBarracks = false;
+					this.openTipBox(2);
+				}
 				this.holding = this.add.sprite(this.input.mousePointer.x,this.input.mousePointer.y,'barracksRed');
 				this.holding.health = 30;
 				this.holding.anchor.setTo(.5,.5);
@@ -272,6 +311,9 @@ BasicGame.Game.prototype = {
 		},this);
 		this.menu.children[1].events.onInputUp.add(function(){
 			if(this.holding != null){
+				if(this.toolTipActive){
+					this.closeTipBox();
+				}
 				this.placeStructure();
 				this.holding.destroy();
 				this.holding = null;
@@ -287,11 +329,15 @@ BasicGame.Game.prototype = {
 			}
 		},this);
 		//////Watchtower
-		this.menu.create(75,430,'purchaseFrame',0);
+		this.menu.create(65,430,'purchaseFrame',0);
 		this.menu.children[2].health = 40;
 		this.menu.children[2].inputEnabled = true;
 		this.menu.children[2].events.onInputDown.add(function(){
-			if(this.menu.children[2].frame == 1){
+			if(this.menu.children[2].frame == 1 && !this.gameEnded){
+				if(this.firstWatchtower){
+					this.firstWatchtower = false;
+					this.openTipBox(3);
+				}
 				this.holding = this.add.sprite(this.input.mousePointer.x,this.input.mousePointer.y,'watchtowerRed');
 				this.holding.health = 40;
 				this.holding.anchor.setTo(.4,.6);
@@ -305,6 +351,9 @@ BasicGame.Game.prototype = {
 		},this);
 		this.menu.children[2].events.onInputUp.add(function(){
 			if(this.holding != null){
+				if(this.toolTipActive){
+					this.closeTipBox();
+				}
 				this.placeStructure();
 				this.holding.destroy();
 				this.holding = null;
@@ -315,11 +364,14 @@ BasicGame.Game.prototype = {
 			}
 		},this);
 		//////Wall
-		this.menu.create(75,535,'purchaseFrame',0);
+		this.menu.create(65,535,'purchaseFrame',0);
 		this.menu.children[3].health = 50;
 		this.menu.children[3].inputEnabled = true;
 		this.menu.children[3].events.onInputDown.add(function(){
-			if(this.menu.children[3].frame == 1){
+			if(this.menu.children[3].frame == 1 && !this.gameEnded){
+				if(this.toolTipActive){
+					this.closeTipBox();
+				}
 				//Upgrade Wall
 				this.gold -= (this.menu.children[3].health*100);
 				this.wall1.frame += 1;
@@ -359,12 +411,14 @@ BasicGame.Game.prototype = {
 		this.menu.children[7].frame = 2
 		this.iconWall = this.add.tween(this.menu.children[7].scale).to({x:.19,y:.19},500,Phaser.Easing.Linear.None,false,0,-1,true);
 		
+		this.menuText = this.add.group();
 		for(var i=0;i<4;i++){
 			this.menu.children[i].anchor.setTo(.5,.5);
 			this.menu.children[i+4].anchor.setTo(.5,.5);
 			this.menu.children[i].scale.setTo(.16);
 			this.menu.children[i].tint = 0xbfbfbf;
-			this.menu.children[i].addChild(this.add.text(0,0,this.menu.children[i].health));
+			text = this.add.text(this.menu.children[i].x + 5,this.menu.children[i].y + 15,parseInt(this.menu.children[i].health),{fill:"white"});
+			this.menuText.add(text);
 		}
 		this.menu.children[6].anchor.setTo(.45,.62);
 		this.menu.children[7].anchor.setTo(.52,.5);
@@ -381,6 +435,14 @@ BasicGame.Game.prototype = {
 		this.iconWall.start();
 		this.iconWall.pause();
 		this.menu.children[7].scale.setTo(.2);
+		
+		////Text lines
+		this.tooltipBox = this.add.sprite(400,1000,'tooltip');
+		this.tooltipBox.anchor.setTo(.5,.5);
+		this.tooltipBox.scale.setTo(.9);
+		this.tooltipBox.inputEnabled = true;
+		this.tooltipBox.events.onInputDown.add(this.closeTipBox,this);
+		this.tooltipActive = false;
 		
 		//Game Over
 		this.defeat = this.add.sprite(400,300,'defeat');
@@ -402,7 +464,7 @@ BasicGame.Game.prototype = {
 		this.getApp.inputEnabled = true;
 		this.getApp.input.useHandCursor = true;
 		this.getApp.events.onInputDown.add(function(){
-			window.location.href = "http://www.google.com";
+			window.open(this.siteLink);
 		},this);
 		this.getApp.kill();
 		
@@ -434,30 +496,50 @@ BasicGame.Game.prototype = {
 		this.installNow.inputEnabled = true;
 		this.installNow.input.useHandCursor = true;
 		this.installNow.events.onInputUp.add(function(){
-			window.location.href = "http://www.google.com";
+			window.open(this.siteLink);
 		},this);
-		
-		////Text lines
-		this.tooltipBox = this.add.sprite(400,900,'tooltip');
-		//this.tooltipBox.inputEnabled = true;
-		//this.tooltipBox.onInputUp.add(this.closeTipBox(),this);
-		this.tooltipActive = false;
 		
 		style = {font:"24px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
 		
-		this.introText = this.add.text(400,900,'We\'re under attack! Build a tower to defend against the enemy troops.', style);
-		this.tutorialText2 = this.add.text(400,900,'We\'re under attack! Build a tower to defend against the enemy troops.', style);
-		this.watchtowerText = this.add.text(400,900,'Watchtowers can attack enemy troops from any angle.', style);
-		this.goldTText = this.add.text(400,900,'Gold mine will increase your gold income.', style);
-		this.wallText = this.add.text(400,900,'Hurry! Upgrade your wall to repair it!', style);
-		this.barracksText = this.add.text(400,900,'The barracks train guards that stop approaching enemies in their tracks.', style);
-		this.upgradeText = this.add.text(400,900,'Tap on structures marked with the arrow to upgrade their abilities.', style);
+		this.introText = this.add.text(0,0,'We\'re under attack! Build a tower to defend against the enemy troops.', style);
+		this.introText.anchor.setTo(.5,.5);
+		this.watchtowerText = this.add.text(0,0,'Watchtowers can attack enemy troops from any angle.', style);
+		this.watchtowerText.anchor.setTo(.5,.5);
+		this.goldTText = this.add.text(0,0,'Gold mine will increase your gold income.', style);
+		this.goldTText.anchor.setTo(.5,.5);
+		this.wallText = this.add.text(0,0,'Hurry! Upgrade your wall to repair it!', style);
+		this.wallText.anchor.setTo(.5,.5);
+		this.barracksText = this.add.text(0,0,'The barracks train guards that stop approaching enemies in their tracks.', style);
+		this.barracksText.anchor.setTo(.5,.5);
+		this.upgradeText = this.add.text(0,0,'Tap on structures marked with the arrow to upgrade their abilities.', style);
+		this.upgradeText.anchor.setTo(.5,.5);
 		this.gameOverText = this.add.text(400,180, 'YOU LOST! INSTALL GAME OF WAR* AND BUILD YOUR EMPIRE IN THIS REAL TIME GAME OF GLOBAL CONQUEST.', style);
 		this.gameOverText.anchor.setTo(.5,.5);
 		this.gameOverText.kill();
 		this.timeUpText = this.add.text(400,180,'TIME\'S UP! INSTALL GAME OF WAR* AND BUILD YOUR EMPIRE IN THIS REAL TIME GAME OF GLOBAL CONQUEST', style);
 		this.timeUpText.anchor.setTo(.5,.5);
 		this.timeUpText.kill();
+		
+		this.tooltipBox.addChild(this.introText);
+		this.tooltipBox.addChild(this.goldTText);
+		this.tooltipBox.addChild(this.barracksText);
+		this.tooltipBox.addChild(this.watchtowerText);
+		this.tooltipBox.addChild(this.wallText);
+		this.tooltipBox.addChild(this.upgradeText);
+		
+		//Tutorial Sets
+		this.tutorialStructures = ['watchtowerRed','goldmineRed'];
+		this.tutorialPlots = [6,5];
+		this.stage = 0;
+		this.tooltipBox.y = 1000;
+		this.tipBoxOpenLandscape = this.add.tween(this.tooltipBox).to({x:400,y:600},500,Phaser.Easing.Bounce.Out);
+		this.tipBoxCloseLandscape = this.add.tween(this.tooltipBox).to({x:400,y:1000},200,Phaser.Easing.Linear.None);
+		this.tooltipBox.y = -300;
+		this.tipBoxOpenPortrait = this.add.tween(this.tooltipBox).to({x:400,y:200},500,Phaser.Easing.Bounce.Out);
+		this.tipBoxClosePortrait = this.add.tween(this.tooltipBox).to({x:400,y:-400},200,Phaser.Easing.Linear.None);
+		for(i=0;i<this.tooltipBox.children.length;i++){
+			this.tooltipBox.children[i].kill();
+		}
 		
 		////Turorial Hand
 		this.hand = this.add.sprite(this.menu.children[0].x,this.menu.children[0].y,'hand');
@@ -468,25 +550,26 @@ BasicGame.Game.prototype = {
 		this.handDisappear = this.add.tween(this.hand).to({alpha:0}, 500, Phaser.Easing.Linear.None, 0, 0, false);
 		
 		////Set initial stats
-		this.gold = 1000000;
+		this.gold = 10000;
 		this.wallHP = 50;
-		this.inTutorial = false;
+		this.inTutorial = true;
 		this.played = false;
 		this.lost = false;
 		this.numStructures = -1;
 		this.gameEnded = false;
+		this.enemiesKilled = 0;
+		
+		
 		
 		//Set timer to spawn enemies
-		this.enemyTimer = this.time.events.loop(5000, function() {
-			this.enemySpawn();
-		},this);
-		
-		//Set timer to game over
-		this.gameTimer = this.time.events.add(60000,function(){
-			this.gameOver();
-		},this);
+		this.timeMultiplier = 1;
+		this.enemyTimer = this.time.events.loop(5000 * this.timeMultiplier, this.enemySpawn,this);
 		
 		if(!this.inTutorial){
+			this.gameTimer = this.time.events.add(60000,function(){
+				this.gameEnded = true;
+				this.gameOver();
+			},this);
 			this.time.events.start();
 		}else{
 			this.enterTutorial();
@@ -494,6 +577,7 @@ BasicGame.Game.prototype = {
     },
 
     update: function () {
+		this.timeMultiplier -= 0.000183; 
 		//Orientation update
 		this.orientationUpdate();
 		//Gold Text Render
@@ -502,7 +586,10 @@ BasicGame.Game.prototype = {
 		//Tutorial Check
 		if(this.inTutorial){
 			//Check if first text box has played
-		}else if(!this.gameEnded){
+			this.checkTutorial();
+			this.structureUpdate();
+			this.enemyUpdate();
+		}else if(!this.inTutorial && !this.gameEnded){
 			//Menu Update
 			this.menuUpdate();
 			
@@ -527,35 +614,105 @@ BasicGame.Game.prototype = {
 		this.menu.children[3].health = 9999999999999;
 		//Make all but specific plot available to place
 		for(i=0;i<11;i++){
-			if(i != 6){
-				this.plots.children[i].health = -1;
+			if(i != this.tutorialPlots[this.stage]){
+				this.plots.children[i].health = -2;
 				this.plots.children[i].alpha = .4;
 			}
 		}
-	},
-	
-	tutorialUpdate: function(){
+		for(i=0;i<4;i++){
+			if(this.menu.children[i+4].key != this.tutorialStructures[this.stage]){
+				this.menu.children[i].frame = 0;
+				this.menu.children[i].tint = 0xbfbfbf;
+				if(i==0){
+					this.iconMine.pause();
+				}else if(i==1){
+					this.iconBarracks.pause();
+				}else if(i==2){
+					this.iconWatchtower.pause();
+				}else{
+					this.iconWall.pause();
+				}
+			}else{
+				this.menu.children[i].frame = 1;
+				this.menu.children[i].tint = 0xffffff;
+				if(i==0){
+					this.iconMine.resume();
+					//this.menu.children[4].scale.setTo(.1);
+				}else if(i==1){
+					this.iconBarracks.resume();
+					//this.menu.children[5].scale.setTo(.15);
+				}else if(i==2){
+					this.iconWatchtower.resume();
+					//this.menu.children[6].scale.setTo(.2);
+				}else{
+					this.iconWall.resume();
+					//this.menu.children[7].scale.setTo(.2);
+				}
+			}
+		}
+		this.openTipBox(0);
+		
+		//Spawn tutorial enemy
+		enemy = this.enemies.create(117,266.85,'enemySoldiers');
+		enemy.health = 100;
+		enemy.animations.add('march',[0,1,2,3,4,5,6,7,8,9,10,11],15,true,true);
+		enemy.animations.add('attack',[12,13,14,15,16,17,18,19,20],15,true,true);
+		enemy.animations.play('attack');
+		enemy.addChild(this.add.sprite(0,-50,'healthRed'));
+		enemy.children[0].scale.setTo(.5);
+		enemy.children[0].anchor.setTo(.07,.5);
+		enemy.addChild(this.add.sprite(0,-50,'healthGreen'));
+		enemy.children[1].scale.setTo(.5);
+		enemy.children[1].anchor.setTo(.07,.5);
 	},
 	
 	checkTutorial: function(){
+		//Dropping structure into plot
+		if(this.holding){
+			this.holding.x = this.input.mousePointer.x;
+			if(!this.landscape){
+				this.holding.x += 100;
+			}
+			this.holding.y = this.input.mousePointer.y;
+		}
 		
-		if(this.structures.children.length == 0){			
-			//If not holding anything, animate hand
-			
-		}else if(this.structures.children.length == 1){
-			//If watchtower is placed, make all but goldmine purchasable
-			this.plots.children[5].health = 0;
-			this.plots.children[5].alpha = 1;
-			this.menu.children[0].health = 9999999999999;
-			this.menu.children[1].health = 30;
-			
-			//If not holding anything, animate hand
-			if(this.holding == null){
-			}else{
-				this.hand
+		if(this.stage == this.tutorialStructures.length){
+			this.exitTutorial();
+		}else if(this.plots.children[this.tutorialPlots[this.stage]].health == -1){			
+			//Update Stage
+			this.stage += 1;
+			if(this.stage != this.tutorialStructures.length){
+				for(i=0;i<4;i++){
+					this.menu.children[i].frame = 1;
+					this.menu.children[i].tint = 0xffffff;
+					if(this.menu.children[i+4].key != this.tutorialStructures[this.stage]){
+						this.menu.children[i].frame = 0;
+						this.menu.children[i].tint = 0xbfbfbf;
+					}
+				}
+				for(i=0;i<11;i++){
+					if(i == this.tutorialPlots[this.stage]){
+						this.plots.children[i].health = 0;
+						this.plots.children[i].alpha = 1;
+					}else if(this.plots.children[i].health = -2){
+						this.plots.children[i].health = 0;
+					}
+				}
 			}
 		}else{
-			this.exitTutorial();
+			//If not holding anything, animate hand
+			if(this.holding == null){
+				
+			}else{
+				this.hand.alpha = 0;
+				for(i=0;i<4;i++){
+					if(this.menu.children[i+4].key == this.tutorialStructures[i]){
+						this.hand.x = this.menu.children[i].x;
+						this.hand.y = this.menu.children[i].y;
+					}
+				}
+				
+			}
 		}
 	},
 	
@@ -568,38 +725,63 @@ BasicGame.Game.prototype = {
 		
 		//Make all other plots available to use
 		for(i=0;i<11;i++){
-			if(i != 5||i != 6){
-				this.plots.children[i].health = 0;
-			}
+			this.plots.children[i].health = 0;
+			this.plots.children[i].alpha = 1;
+		}
+		for(i=0;i<this.tutorialPlots.length;i++){
+			this.plots.children[this.tutorialPlots[i]].health = -1;
+			this.plots.children[this.tutorialPlots[i]].alpha = .4;
 		}
 		
 		//Signal game to begin
 		this.inTutorial = false;
+		this.gameTimer = this.time.events.add(60000,function(){
+			this.gameEnded = true;
+			this.gameOver();
+		},this);
 		this.time.events.start();
 	},
 	
-	openTipBox: function(){
+	openTipBox: function(textIndex){
+		
+		//Hide all text
+		for(i=0;i<this.tooltipBox.children.length;i++){
+			if(i == textIndex){
+				this.tooltipBox.children[textIndex].revive();
+			}else{
+				this.tooltipBox.children[i].kill();
+			}
+		}
+		
 		//Have box move into the screen
 		if(!this.tooltipActive){
-			if(this.landScape){
-				
-			}else{
-				
-			}
-			//Hide all text
-			for(i=0;i<tooltipBox.children.length;i++){
-				this.tooltipBox.children[textIndex].revive();
-			}
+			this.tooltipActive = true;
+		}
+		this.tipClass = textIndex;
+		if(this.landScape){
+			this.tooltipBox.y = 1000;
+			this.tipBoxOpenPortrait = this.add.tween(this.tooltipBox).to({x:400,y:200},500,Phaser.Easing.Bounce.Out);
+			this.tipBoxOpenLandscape.start();
+		}else{
+			this.tooltipBox.y = -300;
+			this.tipBoxOpenPortrait.start();
+		}
+		if(this.landScape){
+			this.tooltipBox.y = 1000;
+			this.tipBoxOpenLandscape.start();
+		}else{
+			this.tooltipBox.y = -300;
+			this.tipBoxOpenPortrait.start();
 		}
 	},
 	
-	closeTipBox: function(textIndex){
+	closeTipBox: function(){
 		//Move out of the screen based on orientation
-		this.tooltipBox.children[textIndex].revive();
-		
-		//Move out of the screen based on orientation
+		this.tooltipActive = false;
 		if(this.landScape){
+			this.tipBoxCloseLandscape.start();
 		}else{
+			this.tipBoxClosePortrait.start();
 		}
 	},
 	
@@ -640,11 +822,6 @@ BasicGame.Game.prototype = {
 			}
 		}
 		
-		//Picking up structures from menu
-		for(var i = this.menu.children.length-1;i>=0;i--){
-			//Make active if available, animate icon. Make inactive otherwise
-			////if(this.menu.children[i]
-		}
 		//Dropping structure into plot
 		if(this.holding){
 			this.holding.x = this.input.mousePointer.x;
@@ -659,7 +836,8 @@ BasicGame.Game.prototype = {
 	placeStructure: function() {
 		if(this.holding.key == 'goldmineRed'){
 			for(var i=0;i<6;i++){
-				if(this.plots.children[i].input.pointerOver() && this.plots.children[i].health != -1){
+				if(this.plots.children[i].input.pointerOver() && this.plots.children[i].health > -1){
+					
 					//Placing structure on selected plot
 					this.numStructures += 1;
 					this.gold -= this.holding.health*100;
@@ -694,6 +872,7 @@ BasicGame.Game.prototype = {
 							this.gold -= thing.health*100;
 							thing.health *= 2;
 							thing.frame += 1;
+							thing.children[0].children[0].setText(thing.health);
 						}
 					},this,this.self);
 					this.structures.sort('y', Phaser.Group.SORT_ASCENDING);
@@ -702,7 +881,10 @@ BasicGame.Game.prototype = {
 			}
 		}else if(this.holding.key == 'barracksRed'){
 			for(var i=6;i<11;i++){
-				if(this.plots.children[i].input.pointerOver() && this.plots.children[i].health != -1){
+				if(this.plots.children[i].input.pointerOver() && this.plots.children[i].health > -1){
+					if(this.toolTipActive){
+						this.closeTipBox();
+					}
 					this.numStructures += 1;
 					this.gold -= this.holding.health*100;
 					this.plots.children[i].health = -1;
@@ -735,7 +917,10 @@ BasicGame.Game.prototype = {
 			}
 		}else if(this.holding.key == 'watchtowerRed'){
 			for(var i=0;i<11;i++){
-				if(this.plots.children[i].input.pointerOver() && this.plots.children[i].health != -1){
+				if(this.plots.children[i].input.pointerOver() && this.plots.children[i].health > -1){
+					if(this.toolTipActive){
+						this.closeTipBox();
+					}
 					this.numStructures += 1;
 					this.gold -= this.holding.health*100;
 					this.plots.children[i].health = -1;
@@ -842,6 +1027,7 @@ BasicGame.Game.prototype = {
 			}
 			//Check for any "dead" enemies. If existent, remove them from the list of enemies
 			if(this.enemies.children[i].health <= 0){
+				this.enemiesKilled += 1;
 				this.enemies.remove(this.enemies.children[i], true);
 			}
 		}
@@ -880,7 +1066,7 @@ BasicGame.Game.prototype = {
 				enemy.animations.play('attack');
 				if(enemy.key == 'enemySoldiers'){
 				
-					if(enemy.frame == 15){
+					if(enemy.frame == 15 && this.enemiesKilled > 0){
 						this.wallHP -= .25;
 					}
 				}else{
@@ -901,7 +1087,7 @@ BasicGame.Game.prototype = {
 		for(var i = 0;i<this.structures.children.length;i++){
 			if(this.structures.children[i].children[0] == null){
 				//Goldmine
-				this.gold += (1 + this.structures.children[i].frame);
+				this.gold += (3 * (this.structures.children[i].frame+1));
 			}else if(this.structures.children[i].key == 'barracksRed'){
 				//Barracks
 				//If respective soldier is dead, revive him
@@ -949,7 +1135,11 @@ BasicGame.Game.prototype = {
 			}else{
 				continue;
 			}
-			if(this.gold/100 >= this.structures.children[i].health && this.structures.children[i].frame<2){
+			if(this.gold/100 >= this.structures.children[i].health && this.structures.children[i].frame<2&& !this.inTutorial){
+				if(this.firstUpgrade){
+					this.firstUpgrade = false;
+					this.openTipBox(5);
+				}
 				//Upgrade arrow appear with price
 				if(!this.structures.children[i].children[upgradeIndex].alive){
 					this.structures.children[i].children[upgradeIndex].revive();
@@ -981,12 +1171,12 @@ BasicGame.Game.prototype = {
 		tower.children[0].health = 0;
 		
 		//Follow closest enemy
-		tempTween = this.add.tween(tower.children[0]).to({x:(enemy.x-tower.x),y:(enemy.y-tower.y)},200,Phaser.Easing.Linear.None,true,100,0,false);
+		tempTween = this.add.tween(tower.children[0]).to({x:(enemy.x-tower.x)*2,y:(enemy.y-tower.y)*2},200,Phaser.Easing.Linear.None,true,100,0,false);
 		tempTween.onComplete.addOnce(function(cannonball){
 			cannonball.kill();
 			enemy.damage(25);
 		},this,tower.children[0]);
-		this.time.events.add(2200/(tower.frame+1), function(){
+		this.time.events.add(1700/(tower.frame+1), function(){
 			//Reset health to refire
 			tower.children[0].health = -1;
 		},this);
@@ -998,9 +1188,12 @@ BasicGame.Game.prototype = {
 		for(var i = 0;i<this.enemies.children.length;i++){
 			dx = tower.x - this.enemies.children[i].x;
 			dy = tower.y - this.enemies.children[i].y;
-			dist = Math.sqrt((dx*dx)+(dy*dy));
-			if(dist < smallestDistance && dist < 200){
-				smallestDistance = dist;
+			dx2 = this.palace.x - this.enemies.children[i].x;
+			dy2 = this.palace.y - this.enemies.children[i].y;
+			wallDist = Math.sqrt((dx2*dx2)+(dy2*dy2));
+			towerDist = Math.sqrt((dx*dx)+(dy*dy));
+			if(wallDist < smallestDistance && towerDist < 320){
+				smallestDistance = towerDist;
 				closest = this.enemies.children[i];
 			}
 		}
@@ -1014,7 +1207,11 @@ BasicGame.Game.prototype = {
 			this.wallGreen.scale.x = .15 * (this.wallHP/(50 * (this.wall1.frame+1)));
 		}
 		if(this.wallHP <= 0){
+			this.gameEnded = true;
 			this.gameDefeat();
+		}else if(this.wallHP < (25 * (this.wall1.frame+1)) && this.firstWall){
+			this.firstWall = false;
+			this.openTipBox(4);
 		}
 	},
 		
@@ -1030,6 +1227,8 @@ BasicGame.Game.prototype = {
 				this.menu.children[i].y = 835;
 				this.menu.children[i+4].x = 220 + (120 * i);
 				this.menu.children[i+4].y = 835;
+				this.menuText.children[i].x = 235 + (120 * i);
+				this.menuText.children[i].y = 850
 			}
 			this.goldUI.x = 250;
 			this.goldUI.y = 760;
@@ -1042,19 +1241,29 @@ BasicGame.Game.prototype = {
 			this.gameOverBox.y = 450;
 			this.gameOverText.y = 330;
 			this.timeUpText.y = 330;
-			this.closeButton.x += 100;
+			this.closeButton.x = 125;
 			this.tryAgain.y = 500;
 			this.getApp.y = 600;
+			this.tooltipBox.x = 400;
+			this.tooltipBox.y = -300
+			this.tooltipBox.scale.setTo(.8);
+			
+			if(this.tooltipActive){
+				this.tooltipBox.y = -300
+				this.openTipBox(this.tipClass);
+			}
 		}else if((window.innerWidth/window.innerHeight) > (3/4) && !this.landscape){
 			this.camera.setPosition(0,0);
 			this.landscape = true;
 			this.scale.setGameSize(800,600);
 			//Rearrange sprites
 			for(i=0;i<4;i++){
-				this.menu.children[i].x = 75;
+				this.menu.children[i].x = 65;
 				this.menu.children[i].y = 220 + (105 * i);
-				this.menu.children[i+4].x = 75;
+				this.menu.children[i+4].x = 65;
 				this.menu.children[i+4].y = 220 + (105 * i);
+				this.menuText.children[i].x = 80;
+				this.menuText.children[i].y = 235 + (105 * i);
 			}
 			this.goldUI.x = 100;
 			this.goldUI.y = 100;
@@ -1068,9 +1277,17 @@ BasicGame.Game.prototype = {
 			this.gameOverBox.y = 300;
 			this.gameOverText.y = 180;
 			this.timeUpText.y = 180;
-			this.closeButton.x = 150;
+			this.closeButton.x = 25;
 			this.tryAgain.y = 350;
 			this.getApp.y = 450;
+			this.tooltipBox.x = 400;
+			this.tooltipBox.y = 1000;
+			this.tooltipBox.scale.setTo(.9);
+			
+			if(this.tooltipActive){
+				this.tooltipBox.y = 1000;
+				this.openTipBox(this.tipClass);
+			}
 		}
 	},
 	
@@ -1085,7 +1302,6 @@ BasicGame.Game.prototype = {
 	
 	gameOver: function() {
 		//Halt all movement and animations
-		this.gameEnded = true;
 		for(var i = this.enemies.children.length-1;i>=0;i--){
 			this.enemies.children[i].animations.stop();
 		}
@@ -1124,7 +1340,6 @@ BasicGame.Game.prototype = {
 		//Remove existing enemies
 		this.enemies.destroy(true,true);
 		this.enemiesSpawned = 0;
-		//this.enemyLife.destroy(true,true);
 		
 		//Remove existing placed structures, replace plots
 		this.structures.destroy(true,true);
@@ -1151,10 +1366,15 @@ BasicGame.Game.prototype = {
 		this.blackScreen.alpha = 0;
 		this.gameEnded = false;
 		this.lost = false;
+		this.timeMultiplier = 1;
+		
+		this.closeTipBox();
 		
 		
-		this.enemyTimer = this.time.events.loop(3000, function() {
-			this.enemySpawn();
+		this.enemyTimer = this.time.events.loop(5000 * this.timeMultiplier, this.enemySpawn,this);
+		this.gameTimer = this.time.events.add(60000,function(){
+			this.gameEnded = true;
+			this.gameOver();
 		},this);
 		this.time.events.start();
 	},
