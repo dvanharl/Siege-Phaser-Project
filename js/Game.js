@@ -901,7 +901,7 @@ BasicGame.Game.prototype = {
 					temp.health = 10;
 					this.camera.shake(0.005,125,true,Phaser.Camera.SHAKE_BOTH,true);
 					//Upgrade Arrow
-					temp.addChild(this.add.sprite(-50,-50,'upgrade'));
+					temp.addChild(this.add.sprite(-50,-150,'upgrade'));
 					temp.children[0].anchor.setTo(.5,.5);
 					temp.children[0].scale.setTo(.15);
 					temp.children[0].addChild(this.add.text(0,0,temp.health));
@@ -945,7 +945,7 @@ BasicGame.Game.prototype = {
 					temp.inputEnabled = true;
 					//temp.input.pixelPerfectClick = true;
 					temp.input.pixelPerfectOver = true;
-					temp.anchor.setTo(.5,.65);
+					temp.anchor.setTo(.5,.55);
 					temp.scale.setTo(1.5);
 					this.camera.shake(0.005,125,true,Phaser.Camera.SHAKE_BOTH,true);
 					this.structures.sort('y', Phaser.Group.SORT_ASCENDING);
@@ -989,10 +989,10 @@ BasicGame.Game.prototype = {
 					temp.children[0].scale.setTo(.2);
 					temp.children[0].kill();
 					//Upgrade Arrow
-					temp.addChild(this.add.sprite(-175,-150,'upgrade'));
+					temp.addChild(this.add.sprite(-50,-0,'upgrade'));
 					temp.children[1].addChild(this.add.text(0,0,temp.health));
 					
-					temp.children[1].scale.setTo(.011375);
+					temp.children[1].scale.setTo(.125);
 					temp.children[1].anchor.setTo(.5,.5);
 					temp.children[1].children[0].scale.setTo(3);
 					temp.children[1].children[0].anchor.setTo(.5,.5);
@@ -1196,12 +1196,13 @@ BasicGame.Game.prototype = {
 					this.structures.children[i].children[upgradeIndex].revive();
 					//this.structures.children[i].children[upgradeIndex].children[0].setText(his.structures.children[i].health);
 					this.structures.children[i].children[upgradeIndex].health = 1;
-				}else if(this.structures.children[i].children[upgradeIndex].y >= -100 &&this.structures.children[i].children[upgradeIndex].health != -1){
+					this.structures.children[i].children[upgradeIndex].y = -25;
+				}else if(this.structures.children[i].children[upgradeIndex].y >= -50 &&this.structures.children[i].children[upgradeIndex].health != -1){
 					this.structures.children[i].children[upgradeIndex].health = 1;
-					this.structures.children[i].children[upgradeIndex].y -= 2;
-				}else if(this.structures.children[i].children[upgradeIndex].y <= -50 && this.structures.children[i].children[upgradeIndex].health != 1){
+					this.structures.children[i].children[upgradeIndex].y -= .5;
+				}else if(this.structures.children[i].children[upgradeIndex].y <= -25 && this.structures.children[i].children[upgradeIndex].health != 1){
 					this.structures.children[i].children[upgradeIndex].health = -1;
-					this.structures.children[i].children[upgradeIndex].y += 2;
+					this.structures.children[i].children[upgradeIndex].y += .5;
 				}else{
 					this.structures.children[i].children[upgradeIndex].health = 0;
 				}
