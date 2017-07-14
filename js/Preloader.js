@@ -41,17 +41,17 @@ BasicGame.Preloader.prototype = {
 
 		//Game Sprites
 		//Terrain
-		this.load.image('map','assets/Terrain/map.png');
+		this.load.image('map','assets/Terrain/map.jpg');
 		this.load.image('plot','assets/Terrain/plot.png');
-		this.load.image('road1','assets/Terrain/road01.png');
-		this.load.image('road2','assets/Terrain/road02.png');
+		//this.load.image('road1','assets/Terrain/road01.png');
+		//this.load.image('road2','assets/Terrain/road02.png');
 		this.load.image('road','assets/Terrain/road.png');
 		
 		//Structures
 		////this.load.spritesheet('barracksBlue','assets/Structures/barracks_blue.png',,437,3);
 		this.load.image('barracksRed','assets/Structures/barracks_red.png');
 		////this.load.spritesheet('farmBlue','assets/Structures/farm_blue.png',700,453,3);
-		this.load.spritesheet('farmRed','assets/Structures/farm_red.png',700,453,3);
+		////this.load.spritesheet('farmRed','assets/Structures/farm_red.png',700,453,3);
 		////this.load.spritesheet('goldmineBlue','assets/Structures/goldmine_blue.png',1000,620,3);
 		this.load.spritesheet('goldmineRed','assets/Structures/goldmine_red.png',100,62,3);
 		////this.load.image('palaceBlue','assets/Structures/palace_blue.png');

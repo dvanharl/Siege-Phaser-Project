@@ -115,9 +115,9 @@ BasicGame.Game.prototype = {
 		this.map = this.add.sprite(0,0,'map');
 		////Roads
 		this.road1 = this.add.sprite(65,250,'road');
-		this.road1.scale.setTo(.17);
+		//this.road1.scale.setTo(.17);
 		this.road3 = this.add.sprite(225,160,'road');
-		this.road3.scale.setTo(.17);
+		//this.road3.scale.setTo(.17);
 		
 		
 		//Initial Structures - Palace and Wall
