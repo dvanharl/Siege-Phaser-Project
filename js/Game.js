@@ -126,13 +126,13 @@ BasicGame.Game.prototype = {
 		this.palace.anchor.setTo(.5,.5);
 		this.wall3 = this.add.sprite(450,26,'wall-a');
 		this.wall3.anchor.setTo(.5,.5);
-		this.wall3.scale.setTo(.6);
+		this.wall3.scale.setTo(3);
 		this.wall1 = this.add.sprite(200,150,'wall-a');
 		this.wall1.anchor.setTo(.5,.5);
-		this.wall1.scale.setTo(.6);
+		this.wall1.scale.setTo(3);
 		this.wall2 = this.add.sprite(-50,274,'wall-a');
 		this.wall2.anchor.setTo(.5,.5);
-		this.wall2.scale.setTo(.6);
+		this.wall2.scale.setTo(3);
 		
 		////Plots
 		this.plots = this.add.group();
@@ -248,7 +248,7 @@ BasicGame.Game.prototype = {
 				this.holding = this.add.sprite(this.input.mousePointer.x,this.input.mousePointer.y,'goldmineRed');
 				this.holding.health = 20;
 				this.holding.anchor.setTo(.5,.5);
-				this.holding.scale.setTo(.15);
+				this.holding.scale.setTo(1.5);
 				for(var i=0;i<6;i++){
 					if(this.plots.children[i].health != -1){
 						this.plotTween[i].resume();
@@ -296,7 +296,7 @@ BasicGame.Game.prototype = {
 				this.holding = this.add.sprite(this.input.mousePointer.x,this.input.mousePointer.y,'barracksRed');
 				this.holding.health = 30;
 				this.holding.anchor.setTo(.5,.5);
-				this.holding.scale.setTo(.3);
+				this.holding.scale.setTo(1.5);
 				for(var i=6;i<11;i++){
 					if(this.plots.children[i].health != -1){
 						this.plotTween[i].resume();
@@ -341,7 +341,7 @@ BasicGame.Game.prototype = {
 				this.holding = this.add.sprite(this.input.mousePointer.x,this.input.mousePointer.y,'watchtowerRed');
 				this.holding.health = 40;
 				this.holding.anchor.setTo(.4,.6);
-				this.holding.scale.setTo(.4);
+				this.holding.scale.setTo(1.5);
 				for(var i=0;i<11;i++){
 					if(this.plots.children[i].health != -1){
 						this.plotTween[i].resume();
@@ -393,23 +393,23 @@ BasicGame.Game.prototype = {
 		////Icons
 		//////Goldmine
 		this.menu.create(this.menu.children[0].x,this.menu.children[0].y,'goldmineRed');
-		//this.menu.children[4].scale.setTo(.1);
-		this.iconMine = this.add.tween(this.menu.children[4].scale).to({x:.09,y:.09},500,Phaser.Easing.Linear.None,false,0,-1,true);
+		this.menu.children[4].scale.setTo(1);
+		this.iconMine = this.add.tween(this.menu.children[4].scale).to({x:.9,y:.9},500,Phaser.Easing.Linear.None,false,0,-1,true);
 		//////Barracks
 		this.menu.create(this.menu.children[1].x,this.menu.children[1].y,'barracksRed');
-		this.menu.children[5].scale.setTo(.15);
-		this.iconBarracks = this.add.tween(this.menu.children[5].scale).to({x:.14,y:.14},500,Phaser.Easing.Linear.None,false,0,-1,true);
+		//this.menu.children[5].scale.setTo(.15);
+		this.iconBarracks = this.add.tween(this.menu.children[5].scale).to({x:.9,y:.9},500,Phaser.Easing.Linear.None,false,0,-1,true);
 		//////Watchtower
 		this.menu.create(this.menu.children[2].x+5,this.menu.children[2].y-25,'watchtowerRed');
 		
-		this.menu.children[6].scale.setTo(.2);
-		this.iconWatchtower = this.add.tween(this.menu.children[6].scale).to({x:.19,y:.19},500,Phaser.Easing.Linear.None,false,0,-1,true);
+		//this.menu.children[6].scale.setTo(.2);
+		this.iconWatchtower = this.add.tween(this.menu.children[6].scale).to({x:.9,y:.9},500,Phaser.Easing.Linear.None,false,0,-1,true);
 		//////Wall
 		this.menu.create(this.menu.children[3].x,this.menu.children[3].y,'wall-a');
-		this.menu.children[7].scale.setTo(.2);
+		//this.menu.children[7].scale.setTo(3);
 		
 		this.menu.children[7].frame = 2
-		this.iconWall = this.add.tween(this.menu.children[7].scale).to({x:.19,y:.19},500,Phaser.Easing.Linear.None,false,0,-1,true);
+		this.iconWall = this.add.tween(this.menu.children[7].scale).to({x:.9,y:.9},500,Phaser.Easing.Linear.None,false,0,-1,true);
 		
 		this.menuText = this.add.group();
 		for(var i=0;i<4;i++){
@@ -425,16 +425,14 @@ BasicGame.Game.prototype = {
 		
 		this.iconMine.start();
 		this.iconMine.pause();
-		this.menu.children[4].scale.setTo(.1);
+		//this.menu.children[4].scale.setTo(.1);
 		this.iconBarracks.start();
 		this.iconBarracks.pause();
-		this.menu.children[5].scale.setTo(.15);
+		this.menu.children[5].scale.setTo(.8);
 		this.iconWatchtower.start();
 		this.iconWatchtower.pause();
-		this.menu.children[6].scale.setTo(.2);
 		this.iconWall.start();
 		this.iconWall.pause();
-		this.menu.children[7].scale.setTo(.2);
 		
 		////Text lines
 		this.tooltipBox = this.add.sprite(400,1000,'tooltip');
@@ -903,9 +901,9 @@ BasicGame.Game.prototype = {
 					temp.health = 10;
 					this.camera.shake(0.005,125,true,Phaser.Camera.SHAKE_BOTH,true);
 					//Upgrade Arrow
-					temp.addChild(this.add.sprite(-300,-300,'upgrade'));
+					temp.addChild(this.add.sprite(-50,-50,'upgrade'));
 					temp.children[0].anchor.setTo(.5,.5);
-					temp.children[0].scale.setTo(1.5);
+					temp.children[0].scale.setTo(.15);
 					temp.children[0].addChild(this.add.text(0,0,temp.health));
 					temp.children[0].children[0].scale.setTo(3);
 					temp.children[0].children[0].anchor.setTo(.5,.5);
@@ -948,13 +946,13 @@ BasicGame.Game.prototype = {
 					//temp.input.pixelPerfectClick = true;
 					temp.input.pixelPerfectOver = true;
 					temp.anchor.setTo(.5,.65);
-					temp.scale.setTo(.3);
+					temp.scale.setTo(1.5);
 					this.camera.shake(0.005,125,true,Phaser.Camera.SHAKE_BOTH,true);
 					this.structures.sort('y', Phaser.Group.SORT_ASCENDING);
 					//Barracks Guard
-					temp.addChild(this.add.sprite(-250,100,'barracksSoldier'));
+					temp.addChild(this.add.sprite(-37.5,15,'barracksSoldier'));
 					temp.children[0].health = 100;
-					temp.children[0].scale.setTo(1.5);
+					temp.children[0].scale.setTo(.4);
 					temp.children[0].anchor.setTo(.5,.5);
 					temp.children[0].animations.add('idle',[0,1,2,3,4,5,6,5,4,3,2,1],15,true);
 					temp.children[0].animations.add('attack',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],24,true);
@@ -981,7 +979,7 @@ BasicGame.Game.prototype = {
 					temp = this.structures.create(this.plots.children[i].x,this.plots.children[i].y,this.holding.key);
 					temp.z = this.plots.children[i].z;
 					temp.anchor.setTo(.5,.7);
-					temp.scale.setTo(.35);
+					temp.scale.setTo(1.75);
 					temp.health = 25;
 					this.camera.shake(0.005,125,true,Phaser.Camera.SHAKE_BOTH,true);
 					//Cannonball
@@ -994,7 +992,7 @@ BasicGame.Game.prototype = {
 					temp.addChild(this.add.sprite(-175,-150,'upgrade'));
 					temp.children[1].addChild(this.add.text(0,0,temp.health));
 					
-					temp.children[1].scale.setTo(.65);
+					temp.children[1].scale.setTo(.011375);
 					temp.children[1].anchor.setTo(.5,.5);
 					temp.children[1].children[0].scale.setTo(3);
 					temp.children[1].children[0].anchor.setTo(.5,.5);
@@ -1198,10 +1196,10 @@ BasicGame.Game.prototype = {
 					this.structures.children[i].children[upgradeIndex].revive();
 					//this.structures.children[i].children[upgradeIndex].children[0].setText(his.structures.children[i].health);
 					this.structures.children[i].children[upgradeIndex].health = 1;
-				}else if(this.structures.children[i].children[upgradeIndex].y >= -200 &&this.structures.children[i].children[upgradeIndex].health != -1){
+				}else if(this.structures.children[i].children[upgradeIndex].y >= -100 &&this.structures.children[i].children[upgradeIndex].health != -1){
 					this.structures.children[i].children[upgradeIndex].health = 1;
 					this.structures.children[i].children[upgradeIndex].y -= 2;
-				}else if(this.structures.children[i].children[upgradeIndex].y <= -100 && this.structures.children[i].children[upgradeIndex].health != 1){
+				}else if(this.structures.children[i].children[upgradeIndex].y <= -50 && this.structures.children[i].children[upgradeIndex].health != 1){
 					this.structures.children[i].children[upgradeIndex].health = -1;
 					this.structures.children[i].children[upgradeIndex].y += 2;
 				}else{
@@ -1224,7 +1222,7 @@ BasicGame.Game.prototype = {
 		tower.children[0].health = 0;
 		
 		//Follow closest enemy
-		tempTween = this.add.tween(tower.children[0]).to({x:(enemy.x-tower.x)*2,y:(enemy.y-tower.y)*2},200,Phaser.Easing.Linear.None,true,100,0,false);
+		tempTween = this.add.tween(tower.children[0]).to({x:(enemy.x-tower.x)/2,y:(enemy.y-tower.y)/2},300,Phaser.Easing.Linear.None,true,100,0,false);
 		tempTween.onComplete.addOnce(function(cannonball){
 			cannonball.kill();
 			enemy.damage(25);

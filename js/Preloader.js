@@ -49,17 +49,17 @@ BasicGame.Preloader.prototype = {
 		
 		//Structures
 		////this.load.spritesheet('barracksBlue','assets/Structures/barracks_blue.png',,437,3);
-		this.load.spritesheet('barracksRed','assets/Structures/barracks_red.png',631,437,3);
+		this.load.image('barracksRed','assets/Structures/barracks_red.png');
 		////this.load.spritesheet('farmBlue','assets/Structures/farm_blue.png',700,453,3);
 		this.load.spritesheet('farmRed','assets/Structures/farm_red.png',700,453,3);
 		////this.load.spritesheet('goldmineBlue','assets/Structures/goldmine_blue.png',1000,620,3);
-		this.load.spritesheet('goldmineRed','assets/Structures/goldmine_red.png',1000,620,3);
+		this.load.spritesheet('goldmineRed','assets/Structures/goldmine_red.png',100,62,3);
 		////this.load.image('palaceBlue','assets/Structures/palace_blue.png');
 		this.load.image('palaceRed','assets/Structures/palace_red.png');
 		////this.load.spritesheet('wall','assets/Structures/wall.png',800,525,3);
-		this.load.spritesheet('wall-a','assets/Structures/wall-a.png',800,525,3);
+		this.load.spritesheet('wall-a','assets/Structures/wall-a.png',160,105,3);
 		////this.load.spritesheet('watchtowerBlue','assets/Structures/watchtower_blue.png',1000,1000,3);
-		this.load.spritesheet('watchtowerRed','assets/Structures/watchtower_red.png',1000,1000,3);
+		this.load.spritesheet('watchtowerRed','assets/Structures/watchtower_red.png',200,200,3);
 		//this.load.spritesheet('upgradeAnim','assets/Structures/upgradeAnimation.png',1002,696,17);
 		this.load.spritesheet('upgradeAnim','assets/Structures/upgrade2.png',250.5,174,17);
 		
