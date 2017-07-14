@@ -1,7 +1,7 @@
 
 BasicGame.Game = function (game) {
 	//Transfered Game Settings
-	this.siteLink = "http://www.google.com"
+	this.siteLink = "http://www.google.com";
 	this.preloader = null;
 	this.banner = null;
 	this.hide_countdown_close_button_on_first_action = null;
@@ -543,11 +543,36 @@ BasicGame.Game.prototype = {
 		
 		////Turorial Hand
 		this.hand = this.add.sprite(this.menu.children[0].x,this.menu.children[0].y,'hand');
+		this.hand.anchor.setTo(.8,.8);
+		this.hand.scale.setTo(.5);
 		this.hand.alpha = 0;
-		this.handAppear = this.add.tween(this.hand).to({alpha:1}, 500, Phaser.Easing.Linear.None, 0, 0, false);
-		this.handMove1 = this.add.tween(this.hand).to({x:this.plots.children[6].x,y:this.plots.children[6].y},1750,Phaser.Easing.Linear.None,0,0,false);
-		this.handMove2 = this.add.tween(this.hand).to({x:this.plots.children[5].x,y:this.plots.children[5].y},1750,Phaser.Easing.Linear.None,0,0,false);
-		this.handDisappear = this.add.tween(this.hand).to({alpha:0}, 500, Phaser.Easing.Linear.None, 0, 0, false);
+		this.handAppear = this.add.tween(this.hand).to({alpha:1}, 700, Phaser.Easing.Linear.None);
+		this.handMove1 = this.add.tween(this.hand).to({x:this.plots.children[6].x,y:this.plots.children[6].y},750,Phaser.Easing.Linear.None);
+		this.handMove2 = this.add.tween(this.hand).to({x:this.plots.children[5].x,y:this.plots.children[5].y},750,Phaser.Easing.Linear.None);
+		this.handDisappear = this.add.tween(this.hand).to({alpha:0}, 700, Phaser.Easing.Linear.None);
+		
+		
+		this.handMotions = [this.handMove1,this.handMove2];
+		this.handAppear.onComplete.add(function(){
+			if(this.inTutorial){
+				this.handMotions[this.stage].start();
+			}
+		},this);
+		this.handMove1.onComplete.add(function(){
+			this.handDisappear.start()
+		},this);
+		this.handMove2.onComplete.add(function(){
+			
+			this.handDisappear.start()
+		},this);
+		this.handDisappear.onComplete.add(function(){
+			for(i=0;i<4;i++){
+				if(this.menu.children[i+4].key == this.tutorialStructures[this.stage]){
+					this.hand.x = this.menu.children[i].x;
+					this.hand.y = this.menu.children[i].y;
+				}
+			}
+		},this);
 		
 		////Set initial stats
 		this.gold = 10000;
@@ -589,6 +614,7 @@ BasicGame.Game.prototype = {
 			this.checkTutorial();
 			this.structureUpdate();
 			this.enemyUpdate();
+			this.updateTutorial();
 		}else if(!this.inTutorial && !this.gameEnded){
 			//Menu Update
 			this.menuUpdate();
@@ -664,6 +690,29 @@ BasicGame.Game.prototype = {
 		enemy.addChild(this.add.sprite(0,-50,'healthGreen'));
 		enemy.children[1].scale.setTo(.5);
 		enemy.children[1].anchor.setTo(.07,.5);
+	},
+	
+	updateTutorial: function(){
+		if(this.holding == null){
+			if(this.hand.alpha == 0){
+				for(i=0;i<4;i++){
+					if(this.menu.children[i+4].key == this.tutorialStructures[this.stage]){
+						this.hand.x = this.menu.children[i].x;
+						this.hand.y = this.menu.children[i].y;
+						break;
+					}
+				}
+				this.handAppear.start();
+			}
+		}else{
+			this.hand.alpha = 0;
+			for(i=0;i<this.menu.children.length;i++){
+				if(this.menu.children[i+4]){
+					this.hand.x = this.menu.children[i].x;
+					this.hand.y = this.menu.children[i].y;
+				}
+			}
+		}
 	},
 	
 	checkTutorial: function(){
@@ -837,7 +886,9 @@ BasicGame.Game.prototype = {
 		if(this.holding.key == 'goldmineRed'){
 			for(var i=0;i<6;i++){
 				if(this.plots.children[i].input.pointerOver() && this.plots.children[i].health > -1){
-					
+					if(this.toolTipActive){
+						this.closeTipBox();
+					}
 					//Placing structure on selected plot
 					this.numStructures += 1;
 					this.gold -= this.holding.health*100;
