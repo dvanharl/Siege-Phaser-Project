@@ -611,10 +611,10 @@ BasicGame.Game.prototype = {
 		//Tutorial Check
 		if(this.inTutorial){
 			//Check if first text box has played
+			this.updateTutorial();
 			this.checkTutorial();
 			this.structureUpdate();
 			this.enemyUpdate();
-			this.updateTutorial();
 		}else if(!this.inTutorial && !this.gameEnded){
 			//Menu Update
 			this.menuUpdate();
@@ -1335,7 +1335,7 @@ BasicGame.Game.prototype = {
 			this.getApp.y = 450;
 			this.tooltipBox.x = 400;
 			this.tooltipBox.y = 1000;
-			this.tooltipBox.scale.setTo(.9);
+			this.tooltipBox.scale.setTo(.8);
 			
 			if(this.tooltipActive){
 				this.tooltipBox.y = 1000;
