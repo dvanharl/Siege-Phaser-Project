@@ -1,6 +1,10 @@
 BasicGame.Preloader = function (game) {
+	this.gameOptions = null;
+	
 	this.preloader = true;
-	this.preloaderOption = 4;
+	this.preloader_logo = true;
+	this.preloader_option = 4;
+	this.preloader_text_option = 2;
 	
 	this.loading = null;
 	this.pleaseWait = null;
@@ -14,28 +18,34 @@ BasicGame.Preloader = function (game) {
 };
 
 BasicGame.Preloader.prototype = {
+	init: function (gameOptions, preloader, preloader_logo,preloader_option,preloader_text_option) {
+		this.gameOptions = gameOptions;
+		this.preloader = preloader;
+		this.preloader_logo = preloader_logo;
+		this.preloader_option = preloader_option;
+		this.preloader_text_option = preloader_text_option;
+	},
 
 	preload: function () {
 		//Preloader Sprites based on option
 		if(this.preloader){
-			if(this.preloaderOption < 3){
+			if(this.preloader_option == 1){
 				this.spokeCircle = this.add.sprite(400,480, 'preloaderSpokeCircle');
 				this.spokeCircle.anchor.setTo(.5,.8);
-				if(this.preloaderOption == 1){
-					this.pleaseWait = this.add.sprite(400,385,'preloaderPleaseWait');
-					this.pleaseWait.anchor.setTo(.5,.5);
-				}
-			}else if(this.preloaderOption == 3){
+			}else if(this.preloader_option == 2){
 				this.solidCircle = this.add.sprite(400,300,'preloaderSolidCircle');
 				this.solidCircle.anchor.setTo(.5,.5);
-			}else{
+			}else if(this.preloader_option == 3){
 				this.preloadBar = this.add.sprite(175, 200, 'preloaderBar');
 				this.preloadBarFill = this.add.sprite(175, 200, 'preloaderBarFill');
 				this.load.setPreloadSprite(this.preloadBarFill);
-				if(this.preloaderOption == 5){
-					this.loading = this.add.sprite(400,385,'preloaderLoading');
-					this.loading.anchor.setTo(.5,.5);
-				}
+			}
+			if(this.preloader_text_option == 1){
+				this.pleaseWait = this.add.sprite(400,385,'preloaderPleaseWait');
+				this.pleaseWait.anchor.setTo(.5,.5);
+			}else if(this.preloader_text_option == 2){
+				this.loading = this.add.sprite(400,385,'preloaderLoading');
+				this.loading.anchor.setTo(.5,.5);
 			}
 		}
 
@@ -90,12 +100,8 @@ BasicGame.Preloader.prototype = {
 		
 	},
 
-	create: function () {
-		/*if(this.preloadBarFill != null){
-			this.preloadBarFill.cropEnabled = false;
-		}*/
-		
-		this.state.start('Game');
+	create: function () {		
+		this.state.start('Game', true, false, this.gameOptions, this.gameOptions.banner, this.gameOptions.hide_countdown_close_button_on_first_action,this.gameOptions.hideCloseButtonTime,this.gameOptions.countDownCloseButton,this.gameOptions.didInteractTimeLimit,this.gameOptions.didInteractTimeLimitEnabled,this.gameOptions.ClickURL);
 	},
 	
 	loadUpdate: function () {

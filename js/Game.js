@@ -1,8 +1,7 @@
 
 BasicGame.Game = function (game) {
 	//Transfered Game Settings
-	this.siteLink = "http://www.google.com";
-	this.preloader = null;
+	this.gameOptions = null;
 	this.banner = null;
 	this.hide_countdown_close_button_on_first_action = null;
 	this.hideCloseButtonTime = null;
@@ -10,9 +9,9 @@ BasicGame.Game = function (game) {
 	this.preloaderStartCountdown = null;
 	this.didInteractTimeLimit = null;
 	this.didInteractTimeLimitEnabled = null;
-	this.preloader_logo = null;
-	this.preloader_option = null;
-	this.preloader_text_option = null;
+	
+	this.siteLink = "http://www.google.com";
+	
 	this.tipClass = 0;
 	
 	
@@ -90,15 +89,16 @@ BasicGame.Game = function (game) {
 };
 
 BasicGame.Game.prototype = {
-	/*init: function () {
-		this.banner;
-		this.hide_countdown_close_button_on_first_action;
-		this.hideCloseButtonTime;
-		this.countDownCloseButton;
-		this.didInteractTimeLimit;
-		this.didInteractTimeLimitEnabled;
-		
-	},*/
+	init: function (gameOptions,banner,hide_countdown_close_button_on_first_action,hideCloseButtonTime,countDownCloseButton,didInteractTimeLimit,didInteractTimeLimitEnabled,ClickURL) {
+		this.gameOptions = gameOptions;
+		this.banner = banner;
+		this.hide_countdown_close_button_on_first_action = hide_countdown_close_button_on_first_action;
+		this.hideCloseButtonTime = hideCloseButtonTime;
+		this.countDownCloseButton = countDownCloseButton;
+		this.didInteractTimeLimit = didInteractTimeLimit;
+		this.didInteractTimeLimitEnabled = didInteractTimeLimitEnabled;
+		this.siteLink = ClickURL;
+	},
 	
     create: function () {
 		this.world.setBounds(0,0,2000,2000);
@@ -122,7 +122,6 @@ BasicGame.Game.prototype = {
 		
 		//Initial Structures - Palace and Wall
 		this.palace = this.add.sprite(50,100,'palaceRed');
-		//this.palace.scale.setTo(.17);
 		this.palace.anchor.setTo(.5,.5);
 		this.wall3 = this.add.sprite(450,26,'wall-a');
 		this.wall3.anchor.setTo(.5,.5);
@@ -146,7 +145,6 @@ BasicGame.Game.prototype = {
 			this.plots.children[i].scale.set(.92);
 			this.plots.children[i].anchor.set(.5,.5);
 			this.plots.children[i].inputEnabled = true;
-			//this.plots.children[i].input.pixelPerfectOver = true;
 			if(i<6){
 				this.plots.children[i].health = 1;
 			}else if(i<9){
@@ -202,7 +200,7 @@ BasicGame.Game.prototype = {
 		
 		//Unit Groups
 		this.structures = this.add.group();
-		this.units = []
+		this.units = [];
 		this.enemies = this.add.group();
 		this.enemiesSpawned = 0;
 		
@@ -397,16 +395,13 @@ BasicGame.Game.prototype = {
 		this.iconMine = this.add.tween(this.menu.children[4].scale).to({x:.9,y:.9},500,Phaser.Easing.Linear.None,false,0,-1,true);
 		//////Barracks
 		this.menu.create(this.menu.children[1].x,this.menu.children[1].y,'barracksRed');
-		//this.menu.children[5].scale.setTo(.15);
+		this.menu.children[5].scale.setTo(.95);
 		this.iconBarracks = this.add.tween(this.menu.children[5].scale).to({x:.9,y:.9},500,Phaser.Easing.Linear.None,false,0,-1,true);
 		//////Watchtower
 		this.menu.create(this.menu.children[2].x+5,this.menu.children[2].y-25,'watchtowerRed');
-		
-		//this.menu.children[6].scale.setTo(.2);
 		this.iconWatchtower = this.add.tween(this.menu.children[6].scale).to({x:.9,y:.9},500,Phaser.Easing.Linear.None,false,0,-1,true);
 		//////Wall
 		this.menu.create(this.menu.children[3].x,this.menu.children[3].y,'wall-a');
-		//this.menu.children[7].scale.setTo(3);
 		
 		this.menu.children[7].frame = 2
 		this.iconWall = this.add.tween(this.menu.children[7].scale).to({x:.9,y:.9},500,Phaser.Easing.Linear.None,false,0,-1,true);
@@ -488,14 +483,16 @@ BasicGame.Game.prototype = {
 		},this);
 		
 		//Install Now Button
-		this.installNow = this.add.sprite(400,50,'buttonInstallNow');
-		this.installNow.anchor.setTo(.5,.5);
-		this.installNow.scale.setTo(.2);
-		this.installNow.inputEnabled = true;
-		this.installNow.input.useHandCursor = true;
-		this.installNow.events.onInputUp.add(function(){
-			window.open(this.siteLink);
-		},this);
+		if(this.banner){
+			this.installNow = this.add.sprite(400,50,'buttonInstallNow');
+			this.installNow.anchor.setTo(.5,.5);
+			this.installNow.scale.setTo(.2);
+			this.installNow.inputEnabled = true;
+			this.installNow.input.useHandCursor = true;
+			this.installNow.events.onInputUp.add(function(){
+				window.open(this.siteLink);
+			},this);
+		}
 		
 		style = {font:"24px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
 		
@@ -742,7 +739,7 @@ BasicGame.Game.prototype = {
 						this.plots.children[i].health = 0;
 						this.plots.children[i].alpha = 1;
 					}else if(this.plots.children[i].health = -2){
-						this.plots.children[i].health = 0;
+						this.plots.children[i].health = -1;
 					}
 				}
 			}
@@ -780,7 +777,7 @@ BasicGame.Game.prototype = {
 			this.plots.children[this.tutorialPlots[i]].alpha = .4;
 		}
 		
-		this.hand.alpha = 0;
+		this.hand.kill();
 		
 		//Signal game to begin
 		this.inTutorial = false;
@@ -944,7 +941,7 @@ BasicGame.Game.prototype = {
 					temp.z = this.plots.children[i].z;
 					temp.inputEnabled = true;
 					//temp.input.pixelPerfectClick = true;
-					temp.input.pixelPerfectOver = true;
+					//temp.input.pixelPerfectOver = true;
 					temp.anchor.setTo(.5,.55);
 					temp.scale.setTo(1.5);
 					this.camera.shake(0.005,125,true,Phaser.Camera.SHAKE_BOTH,true);

@@ -11,12 +11,13 @@ BasicGame.Boot.prototype = {
 		
 		//Scale game window
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		this.scale.maxHeight = window.innerHeight;
 		
     },
 
     preload: function () {
 		//Load JSON file
-		////this.load.text('gameOptions','gameOptions.json');
+		this.load.json('gameOptions','js/gameOptions.json');
 		
         //Load preloader assets
 		this.load.image('preloaderPleaseWait', 'assets/Preloader/preloader_please_wait.png');
@@ -30,6 +31,9 @@ BasicGame.Boot.prototype = {
 
     create: function () {
         //Move to Preloader State
-        this.state.start('Preloader');
+		gameOptions = this.cache.getJSON('gameOptions');
+		console.log(gameOptions);
+		preloader = gameOptions.preloader;
+        this.state.start('Preloader',true, false,gameOptions,preloader,gameOptions.preloader_logo,gameOptions.preloader_option,gameOptions.preloader_text_option);
     }
 };
