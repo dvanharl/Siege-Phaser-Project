@@ -101,7 +101,7 @@ BasicGame.Preloader.prototype = {
 	},
 
 	create: function () {		
-		this.state.start('Game', true, false, this.gameOptions, this.gameOptions.banner, this.gameOptions.hide_countdown_close_button_on_first_action,this.gameOptions.hideCloseButtonTime,this.gameOptions.countDownCloseButton,this.gameOptions.didInteractTimeLimit,this.gameOptions.didInteractTimeLimitEnabled,this.gameOptions.ClickURL);
+		this.state.start('Game',true,false,this.gameOptions,this.gameOptions.banner,this.gameOptions.banner_clickable_on_show,this.gameOptions.hide_countdown_close_button_on_first_action,this.gameOptions.hideCloseButtonTime,this.gameOptions.countDownCloseButton,this.gameOptions.didInteractTimeLimit,this.gameOptions.didInteractTimeLimitEnabled,this.gameOptions.ClickURL,this.gameOptions.MAX_PLAY_TIME,this.gameOptions.tutorial);
 	},
 	
 	loadUpdate: function () {

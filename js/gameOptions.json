@@ -4,11 +4,14 @@
 "preloader_option": 1,
 "preloader_text_option": 2,
 "banner": true,
+"banner_clickable_on_show":true,
 "hide_countdown_close_button_on_first_action": false,
 "hideCloseButtonTime": 5,
 "countDownCloseButton": true,
 "preloaderStartCountdown": true,
 "didInteractTimeLimit": 15,
 "didInteractTimeLimitEnabled": false,
-"ClickURL": "http://www.google.com/"
+"ClickURL": "http://www.google.com/",
+"MAX_PLAY_TIME":90,
+"tutorial":true
 }

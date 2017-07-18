@@ -2,23 +2,31 @@
 BasicGame.Game = function (game) {
 	//Transfered Game Settings
 	this.gameOptions = null;
+	
 	this.banner = null;
+	this.banner_clickable_on_show = false;
+	
 	this.hide_countdown_close_button_on_first_action = null;
 	this.hideCloseButtonTime = null;
 	this.countDownCloseButton = null;
+	
 	this.preloaderStartCountdown = null;
+	
 	this.didInteractTimeLimit = null;
 	this.didInteractTimeLimitEnabled = null;
 	
-	this.siteLink = "http://www.google.com";
 	
-	this.tipClass = 0;
+	
+	this.MAX_PLAY_TIME = 90;
+	
+	this.siteLink = "http://www.google.com";
 	
 	
 	//Game
 	this.tutorialStructures = null;
 	this.tutorialPlots = null;
 	this.stage = null;
+	this.tipClass = 0;
 	
 	this.map = null;
 	
@@ -89,15 +97,18 @@ BasicGame.Game = function (game) {
 };
 
 BasicGame.Game.prototype = {
-	init: function (gameOptions,banner,hide_countdown_close_button_on_first_action,hideCloseButtonTime,countDownCloseButton,didInteractTimeLimit,didInteractTimeLimitEnabled,ClickURL) {
+	init: function (gameOptions,banner,banner_clickable_on_show,hide_countdown_close_button_on_first_action,hideCloseButtonTime,countDownCloseButton,didInteractTimeLimit,didInteractTimeLimitEnabled,ClickURL,MAX_PLAY_TIME,tutorial) {
 		this.gameOptions = gameOptions;
 		this.banner = banner;
+		this.banner_clickable_on_show = banner_clickable_on_show;
 		this.hide_countdown_close_button_on_first_action = hide_countdown_close_button_on_first_action;
 		this.hideCloseButtonTime = hideCloseButtonTime;
 		this.countDownCloseButton = countDownCloseButton;
 		this.didInteractTimeLimit = didInteractTimeLimit;
 		this.didInteractTimeLimitEnabled = didInteractTimeLimitEnabled;
 		this.siteLink = ClickURL;
+		this.MAX_PLAY_TIME = MAX_PLAY_TIME;
+		this.inTutorial = tutorial;
 	},
 	
     create: function () {
@@ -413,6 +424,7 @@ BasicGame.Game.prototype = {
 			this.menu.children[i].scale.setTo(.16);
 			this.menu.children[i].tint = 0xbfbfbf;
 			text = this.add.text(this.menu.children[i].x + 5,this.menu.children[i].y + 15,parseInt(this.menu.children[i].health),{fill:"white"});
+			text.setShadow(-4,4,'rgba(150,150,150,1)',5);
 			this.menuText.add(text);
 		}
 		this.menu.children[6].anchor.setTo(.45,.62);
@@ -473,6 +485,10 @@ BasicGame.Game.prototype = {
 		this.tryAgain.kill();
 		
 		//Close Button
+		if(!this.countDownCloseButton){
+			this.hideCloseButtonTime = 0;
+		}
+		
 		this.closeButton = this.add.sprite(25,25,'buttonClose');
 		this.closeButton.scale.setTo(.05);
 		this.closeButton.anchor.setTo(.5,.5);
@@ -481,17 +497,24 @@ BasicGame.Game.prototype = {
 		this.closeButton.events.onInputUp.add(function(){
 			this.game.destroy();
 		},this);
+		this.closeButton.kill();
+		this.time.events.add(this.hideCloseButtonTime*1000,function(){
+			this.closeButton.revive();
+		},this);
 		
 		//Install Now Button
-		if(this.banner){
-			this.installNow = this.add.sprite(400,50,'buttonInstallNow');
-			this.installNow.anchor.setTo(.5,.5);
-			this.installNow.scale.setTo(.2);
-			this.installNow.inputEnabled = true;
-			this.installNow.input.useHandCursor = true;
+		this.installNow = this.add.sprite(400,50,'buttonInstallNow');
+		this.installNow.anchor.setTo(.5,.5);
+		this.installNow.scale.setTo(.2);
+		this.installNow.inputEnabled = true;
+		this.installNow.input.useHandCursor = true;
+		if(this.banner_clickable_on_show){
 			this.installNow.events.onInputUp.add(function(){
 				window.open(this.siteLink);
 			},this);
+		}
+		if(!this.banner){
+			this.installNow.kill();
 		}
 		
 		style = {font:"24px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
@@ -781,7 +804,7 @@ BasicGame.Game.prototype = {
 		
 		//Signal game to begin
 		this.inTutorial = false;
-		this.gameTimer = this.time.events.add(60000,function(){
+		this.gameTimer = this.time.events.add(this.MAX_PLAY_TIME*1000,function(){
 			this.gameEnded = true;
 			this.gameOver();
 		},this);
@@ -1422,7 +1445,7 @@ BasicGame.Game.prototype = {
 		
 		
 		this.enemyTimer = this.time.events.loop(5000 * this.timeMultiplier, this.enemySpawn,this);
-		this.gameTimer = this.time.events.add(60000,function(){
+		this.gameTimer = this.time.events.add(this.MAX_PLAY_TIME*1000,function(){
 			this.gameEnded = true;
 			this.gameOver();
 		},this);
