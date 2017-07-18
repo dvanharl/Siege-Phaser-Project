@@ -751,7 +751,7 @@ BasicGame.Game.prototype = {
 	},
 	
 	updateTutorial: function(){
-		if(this.holding == null /*|| !*/){
+		if(this.holding == null && this.tutorialPointer){
 			if(this.hand.alpha == 0){
 				for(i=0;i<4;i++){
 					if(this.menu.children[i+4].key == this.tutorialStructures[this.stage]){
@@ -1542,6 +1542,6 @@ BasicGame.Game.prototype = {
 		this.game.debug.text(this.tutorialEnable,100,100);
 		this.game.debug.text(this.tutorialStageOptions,100,125);
 		this.game.debug.text(this.tutorialStructures[this.stage],100,150); */
-		
+		//this.game.debug.text(this.tutorialPointer,100,150);
 	}
 };
