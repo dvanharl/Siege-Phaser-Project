@@ -1,6 +1,10 @@
 
 BasicGame.Game = function (game) {
 	this.testing = 0;
+	this.tutorialStageOptions = null;
+	this.tutorialEnable = null;
+	this.tutorialMessage = null;
+	this.tutorialPointer = null;
 	//Transfered Game Settings
 	this.gameOptions = null;
 	
@@ -521,8 +525,7 @@ BasicGame.Game.prototype = {
 		
 		style = {font:"24px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
 		
-		this.introText = this.add.text(0,0,'We\'re under attack! Build a tower to defend against the enemy troops.', style);
-		this.introText.anchor.setTo(.5,.5);
+		
 		this.watchtowerText = this.add.text(0,0,'Watchtowers can attack enemy troops from any angle.', style);
 		this.watchtowerText.anchor.setTo(.5,.5);
 		this.goldTText = this.add.text(0,0,'Gold mine will increase your gold income.', style);
@@ -540,7 +543,7 @@ BasicGame.Game.prototype = {
 		this.timeUpText.anchor.setTo(.5,.5);
 		this.timeUpText.kill();
 		
-		this.tooltipBox.addChild(this.introText);
+		
 		this.tooltipBox.addChild(this.goldTText);
 		this.tooltipBox.addChild(this.barracksText);
 		this.tooltipBox.addChild(this.watchtowerText);
@@ -574,7 +577,7 @@ BasicGame.Game.prototype = {
 		
 		this.handMotions = [this.handMove1,this.handMove2];
 		this.handAppear.onComplete.add(function(){
-			if(this.inTutorial){
+			if(this.inTutorial && this.tutorialPointer){
 				this.handMotions[this.stage].start();
 			}
 		},this);
@@ -597,7 +600,6 @@ BasicGame.Game.prototype = {
 		////Set initial stats
 		this.gold = 10000;
 		this.wallHP = 50;
-		this.inTutorial = true;
 		this.played = false;
 		this.lost = false;
 		this.numStructures = -1;
@@ -609,6 +611,26 @@ BasicGame.Game.prototype = {
 		//Set timer to spawn enemies
 		this.timeMultiplier = 1;
 		this.enemyTimer = this.time.events.loop(5000 * this.timeMultiplier, this.enemySpawn,this);
+		
+		this.tutorialStageOptions = [];
+		for(i in this.gameOptions.TUTORIAL_SETTINGS){
+			if(i == 'install_banner'){
+				//Select text by option, if not selected, pick 
+				if(this.gameOptions.TUTORIAL_SETTINGS.install_banner.text != null){
+					this.introText = this.add.text(0,0,this.gameOptions.TUTORIAL_SETTINGS.install_banner.text[this.gameOptions.TUTORIAL_SETTINGS.install_banner.option-1], style);
+					
+				}else{
+					this.introText = this.add.text(0,0,"", style);
+				}
+				this.introText.anchor.setTo(.5,.5);
+				this.tooltipBox.addChildAt(this.introText,0);
+			}else{
+				//Turorial stage Options
+				this.tutorialStageOptions.push(this.gameOptions.TUTORIAL_SETTINGS[i].enable);
+				this.tutorialStageOptions.push(this.gameOptions.TUTORIAL_SETTINGS[i].message1);
+				this.tutorialStageOptions.push(this.gameOptions.TUTORIAL_SETTINGS[i].pointer);
+			}
+		}
 		
 		if(!this.inTutorial){
 			this.gameTimer = this.time.events.add(this.MAX_PLAY_TIME*1000,function(){
@@ -633,25 +655,21 @@ BasicGame.Game.prototype = {
 			this.interactUpdate();
 		}
 		
+		//Enemy update
+		this.enemyUpdate();
+		//Structure update
+		this.structureUpdate();
+		this.menuUpdate();
+		
 		//Tutorial Check
 		if(this.inTutorial){
 			//Check if first text box has played
 			this.updateTutorial();
 			this.checkTutorial();
-			this.structureUpdate();
-			this.enemyUpdate();
+		
 		}else if(!this.inTutorial && !this.gameEnded){
-			//Menu Update
-			this.menuUpdate();
-			
 			//Wall HP Update
 			this.wallUpdate();
-			
-			//Enemy update
-			this.enemyUpdate();
-			
-			//Structure update
-			this.structureUpdate();
 			
 			//Gold update
 			this.gold += 1;
@@ -662,7 +680,7 @@ BasicGame.Game.prototype = {
 		if(this.game.input.activePointer.isDown){
 			this.testing = this.time.totalElapsedSeconds();
 		}
-		if(this.time.totalElapsedSeconds() - this.testing >= this.didInteractTimeLimit){
+		if(this.time.totalElapsedSeconds() - this.testing >= this.didInteractTimeLimit && !this.gameEnded && !this.inTutorial){
 			this.gameEnded = true;
 			this.gameOver();
 		}
@@ -680,6 +698,11 @@ BasicGame.Game.prototype = {
 				this.plots.children[i].alpha = .4;
 			}
 		}
+		
+		this.tutorialEnable = this.tutorialStageOptions[0];
+		this.tutorialMessage = this.tutorialStageOptions[1];
+		this.tutorialPointer = this.tutorialStageOptions[2];
+		
 		for(i=0;i<4;i++){
 			if(this.menu.children[i+4].key != this.tutorialStructures[this.stage]){
 				this.menu.children[i].frame = 0;
@@ -728,7 +751,7 @@ BasicGame.Game.prototype = {
 	},
 	
 	updateTutorial: function(){
-		if(this.holding == null){
+		if(this.holding == null /*|| !*/){
 			if(this.hand.alpha == 0){
 				for(i=0;i<4;i++){
 					if(this.menu.children[i+4].key == this.tutorialStructures[this.stage]){
@@ -752,16 +775,25 @@ BasicGame.Game.prototype = {
 	
 	checkTutorial: function(){
 		//Dropping structure into plot
-		if(this.holding){
+		/* if(this.holding){
 			this.holding.x = this.input.mousePointer.x;
 			if(!this.landscape){
 				this.holding.x += 100;
 			}
 			this.holding.y = this.input.mousePointer.y;
-		}
+		} */
 		
 		if(this.stage == this.tutorialStructures.length){
 			this.exitTutorial();
+		}else if(!this.tutorialEnable){
+			//this.stage += 1;
+			if(this.stage == this.tutorialStructures.length){
+				this.exitTutorial();
+			}else{
+				this.tutorialEnable = this.tutorialStageOptions[3*this.stage];
+				this.tutorialMessage = this.tutorialStageOptions[3*this.stage+1];
+				this.tutorialPointer = this.tutorialStageOptions[3*this.stage+2];
+			}
 		}else if(this.plots.children[this.tutorialPlots[this.stage]].health == -1){			
 			//Update Stage
 			this.stage += 1;
@@ -780,6 +812,7 @@ BasicGame.Game.prototype = {
 						this.plots.children[i].alpha = 1;
 					}else if(this.plots.children[i].health = -2){
 						this.plots.children[i].health = -1;
+						this.plots.children[i].alpha = .4;
 					}
 				}
 			}
@@ -825,6 +858,7 @@ BasicGame.Game.prototype = {
 			this.gameEnded = true;
 			this.gameOver();
 		},this);
+		this.testing = this.time.totalElapsedSeconds();
 		this.time.events.start();
 	},
 	
@@ -1457,6 +1491,7 @@ BasicGame.Game.prototype = {
 		this.gameEnded = false;
 		this.lost = false;
 		this.timeMultiplier = 1;
+		this.testing = this.time.totalElapsedSeconds();
 		
 		this.closeTipBox();
 		
@@ -1470,6 +1505,10 @@ BasicGame.Game.prototype = {
 	},
 	
 	render: function() {
-		this.game.debug.text(this.testing,200,50);
+		/*this.game.debug.text(this.inTutorial,100,25);
+		this.game.debug.text(this.stage,100,50);
+		this.game.debug.text(this.tutorialStructures,100,75);
+		this.game.debug.text(this.tutorialEnable,100,100);
+		this.game.debug.text(this.tutorialStageOptions,100,125);*/
 	}
 };

@@ -17,7 +17,7 @@
 	"TUTORIAL_SETTINGS":{
 		"install_banner":{
 			"option":1,
-			"text":[]
+			"text":["We're under attack! Build a tower to defend against the enemy troops."]
 		},
 		"stage1":{
 			"enable":true,
@@ -27,7 +27,7 @@
 		"stage2":{
 			"enable":true,
 			"message1":true,
-			"pointer":false
+			"pointer":true
 		}
 	}
 }
