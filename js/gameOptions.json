@@ -1,17 +1,33 @@
 {
-"preloader": true,
-"preloader_logo": true,
-"preloader_option": 1,
-"preloader_text_option": 2,
-"banner": true,
-"banner_clickable_on_show":true,
-"hide_countdown_close_button_on_first_action": false,
-"hideCloseButtonTime": 5,
-"countDownCloseButton": true,
-"preloaderStartCountdown": true,
-"didInteractTimeLimit": 15,
-"didInteractTimeLimitEnabled": false,
-"ClickURL": "http://www.google.com/",
-"MAX_PLAY_TIME":90,
-"tutorial":true
+	"preloader": true,
+	"preloader_logo": true,
+	"preloader_option": 1,
+	"preloader_text_option": 2,
+	"banner": true,
+	"banner_clickable_on_show":true,
+	"hide_countdown_close_button_on_first_action": false,
+	"hideCloseButtonTime": 5,
+	"countDownCloseButton": true,
+	"preloaderStartCountdown": true,
+	"didInteractTimeLimit": 15,
+	"didInteractTimeLimitEnabled": true,
+	"ClickURL": "http://www.google.com/",
+	"MAX_PLAY_TIME":90,
+	"tutorial":true,
+	"TUTORIAL_SETTINGS":{
+		"install_banner":{
+			"option":1,
+			"text":[]
+		},
+		"stage1":{
+			"enable":true,
+			"message1":true,
+			"pointer":false
+		},
+		"stage2":{
+			"enable":true,
+			"message1":true,
+			"pointer":false
+		}
+	}
 }

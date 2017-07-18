@@ -1,5 +1,6 @@
 
 BasicGame.Game = function (game) {
+	this.testing = 0;
 	//Transfered Game Settings
 	this.gameOptions = null;
 	
@@ -112,6 +113,7 @@ BasicGame.Game.prototype = {
 	},
 	
     create: function () {
+		this.testing = 0;
 		this.world.setBounds(0,0,2000,2000);
 		if((window.innerWidth/window.innerHeight) <= (3/4)){
 			this.landscape = true;
@@ -609,7 +611,7 @@ BasicGame.Game.prototype = {
 		this.enemyTimer = this.time.events.loop(5000 * this.timeMultiplier, this.enemySpawn,this);
 		
 		if(!this.inTutorial){
-			this.gameTimer = this.time.events.add(60000,function(){
+			this.gameTimer = this.time.events.add(this.MAX_PLAY_TIME*1000,function(){
 				this.gameEnded = true;
 				this.gameOver();
 			},this);
@@ -617,6 +619,7 @@ BasicGame.Game.prototype = {
 		}else{
 			this.enterTutorial();
 		}
+		
     },
 
     update: function () {
@@ -625,6 +628,10 @@ BasicGame.Game.prototype = {
 		this.orientationUpdate();
 		//Gold Text Render
 		this.goldText.setText(parseInt((this.gold/100),10));
+		//Interact Update
+		if(this.didInteractTimeLimitEnabled){
+			this.interactUpdate();
+		}
 		
 		//Tutorial Check
 		if(this.inTutorial){
@@ -650,6 +657,16 @@ BasicGame.Game.prototype = {
 			this.gold += 1;
 		}
     },
+	
+	interactUpdate: function(){
+		if(this.game.input.activePointer.isDown){
+			this.testing = this.time.totalElapsedSeconds();
+		}
+		if(this.time.totalElapsedSeconds() - this.testing >= this.didInteractTimeLimit){
+			this.gameEnded = true;
+			this.gameOver();
+		}
+	},
 	
 	enterTutorial: function(){
 		//Make all but watchtower purchasable
@@ -1453,5 +1470,6 @@ BasicGame.Game.prototype = {
 	},
 	
 	render: function() {
+		this.game.debug.text(this.testing,200,50);
 	}
 };
