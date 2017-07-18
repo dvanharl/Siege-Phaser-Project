@@ -786,24 +786,55 @@ BasicGame.Game.prototype = {
 		if(this.stage == this.tutorialStructures.length){
 			this.exitTutorial();
 		}else if(!this.tutorialEnable){
-			//this.stage += 1;
+			this.stage += 1;
 			if(this.stage == this.tutorialStructures.length){
 				this.exitTutorial();
 			}else{
 				this.tutorialEnable = this.tutorialStageOptions[3*this.stage];
 				this.tutorialMessage = this.tutorialStageOptions[3*this.stage+1];
 				this.tutorialPointer = this.tutorialStageOptions[3*this.stage+2];
+				if(this.stage != this.tutorialStructures.length){
+					this.menu.children[0].health = 20;
+					this.menu.children[1].health = 30;
+					this.menu.children[2].health = 40;
+					this.menu.children[3].health = 50;
+					for(i=0;i<4;i++){
+						if(this.menu.children[i+4].key != this.tutorialStructures[this.stage]){
+							this.menu.children[i].frame = 0;
+							this.menu.children[i].tint = 0xbfbfbf;
+							this.menu.children[i].health = 99999999999;
+						}else{
+							this.menu.children[i].frame = 1;
+							this.menu.children[i].tint = 0xffffff;
+						}
+					}
+					for(i=0;i<11;i++){
+						if(i == this.tutorialPlots[this.stage]){
+							this.plots.children[i].health = 0;
+							this.plots.children[i].alpha = 1;
+						}else if(this.plots.children[i].health = -2){
+							this.plots.children[i].health = -1;
+							this.plots.children[i].alpha = .4;
+						}
+					}
+				}
 			}
 		}else if(this.plots.children[this.tutorialPlots[this.stage]].health == -1){			
 			//Update Stage
 			this.stage += 1;
 			if(this.stage != this.tutorialStructures.length){
+				this.menu.children[0].health = 20;
+				this.menu.children[1].health = 30;
+				this.menu.children[2].health = 40;
+				this.menu.children[3].health = 50;
 				for(i=0;i<4;i++){
-					this.menu.children[i].frame = 1;
-					this.menu.children[i].tint = 0xffffff;
 					if(this.menu.children[i+4].key != this.tutorialStructures[this.stage]){
 						this.menu.children[i].frame = 0;
 						this.menu.children[i].tint = 0xbfbfbf;
+						this.menu.children[i].health = 999999999999;
+					}else{
+						this.menu.children[i].frame = 1;
+						this.menu.children[i].tint = 0xffffff;
 					}
 				}
 				for(i=0;i<11;i++){
@@ -1505,10 +1536,12 @@ BasicGame.Game.prototype = {
 	},
 	
 	render: function() {
-		/*this.game.debug.text(this.inTutorial,100,25);
+		/* this.game.debug.text(this.inTutorial,100,25);
 		this.game.debug.text(this.stage,100,50);
 		this.game.debug.text(this.tutorialStructures,100,75);
 		this.game.debug.text(this.tutorialEnable,100,100);
-		this.game.debug.text(this.tutorialStageOptions,100,125);*/
+		this.game.debug.text(this.tutorialStageOptions,100,125);
+		this.game.debug.text(this.tutorialStructures[this.stage],100,150); */
+		
 	}
 };
