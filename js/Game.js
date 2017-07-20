@@ -523,18 +523,18 @@ BasicGame.Game.prototype = {
 			this.installNow.kill();
 		}
 		
-		style = {font:"24px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
+		style = {font:"14px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
 		
 		
-		this.watchtowerText = this.add.text(0,0,'Watchtowers can attack enemy troops from any angle.', style);
+		this.watchtowerText = this.add.text(20,0,'Watchtowers can attack enemy troops from any angle.', style);
 		this.watchtowerText.anchor.setTo(.5,.5);
-		this.goldTText = this.add.text(0,0,'Gold mine will increase your gold income.', style);
+		this.goldTText = this.add.text(20,0,'Gold mine will increase your gold income.', style);
 		this.goldTText.anchor.setTo(.5,.5);
-		this.wallText = this.add.text(0,0,'Hurry! Upgrade your wall to repair it!', style);
+		this.wallText = this.add.text(20,0,'Hurry! Upgrade your wall to repair it!', style);
 		this.wallText.anchor.setTo(.5,.5);
-		this.barracksText = this.add.text(0,0,'The barracks train guards that stop approaching enemies in their tracks.', style);
+		this.barracksText = this.add.text(20,0,'The barracks train guards that stop approaching enemies in their tracks.', style);
 		this.barracksText.anchor.setTo(.5,.5);
-		this.upgradeText = this.add.text(0,0,'Tap on structures marked with the arrow to upgrade their abilities.', style);
+		this.upgradeText = this.add.text(20,0,'Tap on structures marked with the arrow to upgrade their abilities.', style);
 		this.upgradeText.anchor.setTo(.5,.5);
 		this.gameOverText = this.add.text(400,180, 'YOU LOST! INSTALL GAME OF WAR* AND BUILD YOUR EMPIRE IN THIS REAL TIME GAME OF GLOBAL CONQUEST.', style);
 		this.gameOverText.anchor.setTo(.5,.5);
@@ -550,9 +550,7 @@ BasicGame.Game.prototype = {
 		this.tooltipBox.addChild(this.wallText);
 		this.tooltipBox.addChild(this.upgradeText);
 		
-		for(i=0;i<this.tooltipBox.children.length;i++){
-			this.tooltipBox.children[i].scale.setTo(.5);
-		}
+		
 		
 		//Tutorial Sets
 		this.tutorialStructures = ['watchtowerRed','goldmineRed'];
@@ -621,7 +619,7 @@ BasicGame.Game.prototype = {
 			if(i == 'install_banner'){
 				//Select text by option, if not selected, pick 
 				if(this.gameOptions.TUTORIAL_SETTINGS.install_banner.text != null){
-					this.introText = this.add.text(0,0,this.gameOptions.TUTORIAL_SETTINGS.install_banner.text[this.gameOptions.TUTORIAL_SETTINGS.install_banner.option-1], style);
+					this.introText = this.add.text(20,0,this.gameOptions.TUTORIAL_SETTINGS.install_banner.text[this.gameOptions.TUTORIAL_SETTINGS.install_banner.option-1], style);
 					
 				}else{
 					this.introText = this.add.text(0,0,"", style);
@@ -635,6 +633,10 @@ BasicGame.Game.prototype = {
 				this.tutorialStageOptions.push(this.gameOptions.TUTORIAL_SETTINGS[i].pointer);
 			}
 		}
+		
+		/*for(i=0;i<this.tooltipBox.children.length;i++){
+			this.tooltipBox.children[i].scale.setTo(.5);
+		}*/
 		
 		if(!this.inTutorial){
 			this.gameTimer = this.time.events.add(this.MAX_PLAY_TIME*1000,function(){
