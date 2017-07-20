@@ -724,7 +724,8 @@ BasicGame.Game.prototype = {
 		this.orientationUpdate();
 		this.landscape = false;
 		this.orientationUpdate();
-		
+		this.landscape = true;
+		this.orientationUpdate();
 		
     },
 
