@@ -260,7 +260,7 @@ BasicGame.Game.prototype = {
 					this.firstGold = false;
 					this.openTipBox(1);
 				}
-				this.holding = this.add.sprite(this.input.mousePointer.x,this.input.mousePointer.y,'goldmineRed');
+				this.holding = this.add.sprite(this.input.activePointer.x,this.input.activePointer.y,'goldmineRed');
 				this.holding.health = 20;
 				this.holding.anchor.setTo(.5,.5);
 				this.holding.scale.setTo(1.5);
@@ -308,7 +308,7 @@ BasicGame.Game.prototype = {
 					this.firstBarracks = false;
 					this.openTipBox(2);
 				}
-				this.holding = this.add.sprite(this.input.mousePointer.x,this.input.mousePointer.y,'barracksRed');
+				this.holding = this.add.sprite(this.input.activePointer.x,this.input.activePointer.y,'barracksRed');
 				this.holding.health = 30;
 				this.holding.anchor.setTo(.5,.5);
 				this.holding.scale.setTo(1.5);
@@ -353,7 +353,7 @@ BasicGame.Game.prototype = {
 					this.firstWatchtower = false;
 					this.openTipBox(3);
 				}
-				this.holding = this.add.sprite(this.input.mousePointer.x,this.input.mousePointer.y,'watchtowerRed');
+				this.holding = this.add.sprite(this.input.activePointer.x,this.input.activePointer.y,'watchtowerRed');
 				this.holding.health = 40;
 				this.holding.anchor.setTo(.4,.6);
 				this.holding.scale.setTo(1.5);
@@ -470,7 +470,7 @@ BasicGame.Game.prototype = {
 		this.gameOverBox.kill();
 		
 		this.getApp = this.add.sprite(450,450,'buttonGetApp');
-		this.getApp.scale.setTo(.2);
+		//this.getApp.scale.setTo(.2);
 		this.getApp.anchor.setTo(.5,.5);
 		this.getApp.inputEnabled = true;
 		this.getApp.input.useHandCursor = true;
@@ -480,7 +480,7 @@ BasicGame.Game.prototype = {
 		this.getApp.kill();
 		
 		this.tryAgain = this.add.sprite(450,350,'buttonTryAgain');
-		this.tryAgain.scale.setTo(.2);
+		//this.tryAgain.scale.setTo(.2);
 		this.tryAgain.anchor.setTo(.5,.5);
 		this.tryAgain.inputEnabled = true;
 		this.tryAgain.input.useHandCursor = true;
@@ -634,10 +634,6 @@ BasicGame.Game.prototype = {
 			}
 		}
 		
-		/*for(i=0;i<this.tooltipBox.children.length;i++){
-			this.tooltipBox.children[i].scale.setTo(.5);
-		}*/
-		
 		if(!this.inTutorial){
 			this.gameTimer = this.time.events.add(this.MAX_PLAY_TIME*1000,function(){
 				this.gameEnded = true;
@@ -647,78 +643,6 @@ BasicGame.Game.prototype = {
 		}else{
 			this.enterTutorial();
 		}
-		
-		/*if((window.innerWidth/window.innerHeight) <= (3/4)){
-			this.landscape = false;
-			this.camera.setPosition(100,0);
-			this.scale.setGameSize(600,900);
-			//Rearrange sprites
-			for(i=0;i<4;i++){
-				this.menu.children[i].x = 220 + (120 * i);
-				this.menu.children[i].y = 835;
-				this.menu.children[i+4].x = 220 + (120 * i);
-				this.menu.children[i+4].y = 835;
-				this.menuText.children[i].x = 235 + (120 * i);
-				this.menuText.children[i].y = 850
-			}
-			this.goldUI.x = 250;
-			this.goldUI.y = 760;
-			this.wallUI.x = 450;
-			this.wallUI.y = 100;
-			this.wallGreen.x = 450;
-			this.wallGreen.y = 100;
-			this.wallRed.x = 450;
-			this.wallRed.y = 100;
-			this.gameOverBox.y = 450;
-			this.gameOverText.y = 330;
-			this.timeUpText.y = 330;
-			this.closeButton.x = 125;
-			this.tryAgain.y = 500;
-			this.getApp.y = 600;
-			this.tooltipBox.x = 400;
-			this.tooltipBox.y = -300
-			this.tooltipBox.scale.setTo(1.3);
-			
-			if(this.tooltipActive){
-				this.tooltipBox.y = -300
-				this.openTipBox(this.tipClass);
-			}
-		}else if((window.innerWidth/window.innerHeight) > (3/4)){
-			this.camera.setPosition(0,0);
-			this.landscape = true;
-			this.scale.setGameSize(800,600);
-			//Rearrange sprites
-			for(i=0;i<4;i++){
-				this.menu.children[i].x = 65;
-				this.menu.children[i].y = 220 + (105 * i);
-				this.menu.children[i+4].x = 65;
-				this.menu.children[i+4].y = 220 + (105 * i);
-				this.menuText.children[i].x = 80;
-				this.menuText.children[i].y = 235 + (105 * i);
-			}
-			this.goldUI.x = 100;
-			this.goldUI.y = 100;
-			this.installNow.x = 400;
-			this.wallUI.x = 550;
-			this.wallUI.y = 50;
-			this.wallGreen.x = 550;
-			this.wallGreen.y = 50;
-			this.wallRed.x = 550;
-			this.wallRed.y = 50;
-			this.gameOverBox.y = 300;
-			this.gameOverText.y = 180;
-			this.timeUpText.y = 180;
-			this.closeButton.x = 25;
-			this.tryAgain.y = 350;
-			this.getApp.y = 450;
-			this.tooltipBox.x = 400;
-			this.tooltipBox.y = 1000;
-			
-			if(this.tooltipActive){
-				this.tooltipBox.y = 1000;
-				this.openTipBox(this.tipClass);
-			}
-		}*/
 		
 		this.landscape = true;
 		this.orientationUpdate();
@@ -861,11 +785,11 @@ BasicGame.Game.prototype = {
 	checkTutorial: function(){
 		//Dropping structure into plot
 		/* if(this.holding){
-			this.holding.x = this.input.mousePointer.x;
+			this.holding.x = this.input.activePointer.x;
 			if(!this.landscape){
 				this.holding.x += 100;
 			}
-			this.holding.y = this.input.mousePointer.y;
+			this.holding.y = this.input.activePointer.y;
 		} */
 		
 		if(this.stage == this.tutorialStructures.length){
@@ -1060,11 +984,11 @@ BasicGame.Game.prototype = {
 		
 		//Dropping structure into plot
 		if(this.holding){
-			this.holding.x = this.input.mousePointer.x;
+			this.holding.x = this.input.activePointer.x;
 			if(!this.landscape){
 				this.holding.x += 100;
 			}
-			this.holding.y = this.input.mousePointer.y;
+			this.holding.y = this.input.activePointer.y;
 		}
 				
 	},
