@@ -450,7 +450,7 @@ BasicGame.Game.prototype = {
 		////Text lines
 		this.tooltipBox = this.add.sprite(400,1000,'tooltip');
 		this.tooltipBox.anchor.setTo(.5,.5);
-		this.tooltipBox.scale.setTo(1.6);
+		this.tooltipBox.scale.setTo(1.3);
 		this.tooltipBox.inputEnabled = true;
 		this.tooltipBox.events.onInputDown.add(this.closeTipBox,this);
 		this.tooltipActive = false;
@@ -549,6 +549,10 @@ BasicGame.Game.prototype = {
 		this.tooltipBox.addChild(this.watchtowerText);
 		this.tooltipBox.addChild(this.wallText);
 		this.tooltipBox.addChild(this.upgradeText);
+		
+		for(i=0;i<this.tooltipBox.children.length;i++){
+			this.tooltipBox.children[i].scale.setTo(.5);
+		}
 		
 		//Tutorial Sets
 		this.tutorialStructures = ['watchtowerRed','goldmineRed'];
@@ -671,7 +675,7 @@ BasicGame.Game.prototype = {
 			this.getApp.y = 600;
 			this.tooltipBox.x = 400;
 			this.tooltipBox.y = -300
-			//this.tooltipBox.scale.setTo(1.6);
+			this.tooltipBox.scale.setTo(1.3);
 			
 			if(this.tooltipActive){
 				this.tooltipBox.y = -300
@@ -707,7 +711,6 @@ BasicGame.Game.prototype = {
 			this.getApp.y = 450;
 			this.tooltipBox.x = 400;
 			this.tooltipBox.y = 1000;
-			//this.tooltipBox.scale.setTo(1);
 			
 			if(this.tooltipActive){
 				this.tooltipBox.y = 1000;
@@ -1474,7 +1477,6 @@ BasicGame.Game.prototype = {
 			this.getApp.y = 600;
 			this.tooltipBox.x = 400;
 			this.tooltipBox.y = -300
-			//this.tooltipBox.scale.setTo(1);
 			
 			if(this.tooltipActive){
 				this.tooltipBox.y = -300
@@ -1510,7 +1512,6 @@ BasicGame.Game.prototype = {
 			this.getApp.y = 450;
 			this.tooltipBox.x = 400;
 			this.tooltipBox.y = 1000;
-			//this.tooltipBox.scale.setTo(1);
 			
 			if(this.tooltipActive){
 				this.tooltipBox.y = 1000;
