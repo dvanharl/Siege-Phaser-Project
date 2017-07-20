@@ -21,10 +21,10 @@ BasicGame.Boot.prototype = {
 		
         //Load preloader assets
 		this.load.image('preloaderPleaseWait', 'assets/Preloader/preloader_please_wait.png');
-		this.load.image('preloaderSpokeCircle', 'assets/Preloader/preloader_spoke_circle.png');
-		this.load.image('preloaderSolidCircle', 'assets/Preloader/preloader_solid_circle.png');
+		this.load.image('preloaderSpokeCircle', 'assets/Preloader/preloader_spoke_circle.jpg');
+		this.load.image('preloaderSolidCircle', 'assets/Preloader/preloader_solid_circle.jpg');
 		
-        this.load.image('preloaderBar', 'assets/Preloader/preloader_loading_bar.png');
+        this.load.image('preloaderBar', 'assets/Preloader/preloader_loading_bar.jpg');
 		this.load.image('preloaderBarFill', 'assets/Preloader/preloader_loading_bar_fill.png');
 		this.load.image('preloaderLoading','assets/Preloader/preloader_loading.png');
     },

@@ -450,7 +450,7 @@ BasicGame.Game.prototype = {
 		////Text lines
 		this.tooltipBox = this.add.sprite(400,1000,'tooltip');
 		this.tooltipBox.anchor.setTo(.5,.5);
-		this.tooltipBox.scale.setTo(.9);
+		//this.tooltipBox.scale.setTo(1.6);
 		this.tooltipBox.inputEnabled = true;
 		this.tooltipBox.events.onInputDown.add(this.closeTipBox,this);
 		this.tooltipActive = false;
@@ -466,7 +466,7 @@ BasicGame.Game.prototype = {
 		
 		this.gameOverBox = this.add.sprite(400,300,'gameover');
 		this.gameOverBox.anchor.setTo(.5,.5);
-		this.gameOverBox.scale.setTo(.5);
+		//this.gameOverBox.scale.setTo(.5);
 		this.gameOverBox.kill();
 		
 		this.getApp = this.add.sprite(450,450,'buttonGetApp');
@@ -496,7 +496,7 @@ BasicGame.Game.prototype = {
 		}
 		
 		this.closeButton = this.add.sprite(25,25,'buttonClose');
-		this.closeButton.scale.setTo(.05);
+		this.closeButton.scale.setTo(.5);
 		this.closeButton.anchor.setTo(.5,.5);
 		this.closeButton.inputEnabled = true;
 		this.closeButton.input.useHandCursor = true;
@@ -567,7 +567,7 @@ BasicGame.Game.prototype = {
 		////Turorial Hand
 		
 		this.hand.anchor.setTo(.8,.8);
-		this.hand.scale.setTo(.5);
+		//this.hand.scale.setTo(.5);
 		this.hand.alpha = 0;
 		this.handAppear = this.add.tween(this.hand).to({alpha:1}, 700, Phaser.Easing.Linear.None);
 		this.handMove1 = this.add.tween(this.hand).to({x:this.plots.children[6].x,y:this.plots.children[6].y},750,Phaser.Easing.Linear.None);
@@ -641,6 +641,80 @@ BasicGame.Game.prototype = {
 		}else{
 			this.enterTutorial();
 		}
+		
+		if((window.innerWidth/window.innerHeight) <= (3/4)){
+			this.landscape = false;
+			this.camera.setPosition(100,0);
+			this.scale.setGameSize(600,900);
+			//Rearrange sprites
+			for(i=0;i<4;i++){
+				this.menu.children[i].x = 220 + (120 * i);
+				this.menu.children[i].y = 835;
+				this.menu.children[i+4].x = 220 + (120 * i);
+				this.menu.children[i+4].y = 835;
+				this.menuText.children[i].x = 235 + (120 * i);
+				this.menuText.children[i].y = 850
+			}
+			this.goldUI.x = 250;
+			this.goldUI.y = 760;
+			this.wallUI.x = 450;
+			this.wallUI.y = 100;
+			this.wallGreen.x = 450;
+			this.wallGreen.y = 100;
+			this.wallRed.x = 450;
+			this.wallRed.y = 100;
+			this.gameOverBox.y = 450;
+			this.gameOverText.y = 330;
+			this.timeUpText.y = 330;
+			this.closeButton.x = 125;
+			this.tryAgain.y = 500;
+			this.getApp.y = 600;
+			this.tooltipBox.x = 400;
+			this.tooltipBox.y = -300
+			this.tooltipBox.scale.setTo(1);
+			
+			if(this.tooltipActive){
+				this.tooltipBox.y = -300
+				this.openTipBox(this.tipClass);
+			}
+		}else if((window.innerWidth/window.innerHeight) > (3/4)){
+			this.camera.setPosition(0,0);
+			this.landscape = true;
+			this.scale.setGameSize(800,600);
+			//Rearrange sprites
+			for(i=0;i<4;i++){
+				this.menu.children[i].x = 65;
+				this.menu.children[i].y = 220 + (105 * i);
+				this.menu.children[i+4].x = 65;
+				this.menu.children[i+4].y = 220 + (105 * i);
+				this.menuText.children[i].x = 80;
+				this.menuText.children[i].y = 235 + (105 * i);
+			}
+			this.goldUI.x = 100;
+			this.goldUI.y = 100;
+			this.installNow.x = 400;
+			this.wallUI.x = 550;
+			this.wallUI.y = 50;
+			this.wallGreen.x = 550;
+			this.wallGreen.y = 50;
+			this.wallRed.x = 550;
+			this.wallRed.y = 50;
+			this.gameOverBox.y = 300;
+			this.gameOverText.y = 180;
+			this.timeUpText.y = 180;
+			this.closeButton.x = 25;
+			this.tryAgain.y = 350;
+			this.getApp.y = 450;
+			this.tooltipBox.x = 400;
+			this.tooltipBox.y = 1000;
+			this.tooltipBox.scale.setTo(1);
+			
+			if(this.tooltipActive){
+				this.tooltipBox.y = 1000;
+				this.openTipBox(this.tipClass);
+			}
+		}
+		
 		
     },
 
@@ -1400,7 +1474,7 @@ BasicGame.Game.prototype = {
 			this.getApp.y = 600;
 			this.tooltipBox.x = 400;
 			this.tooltipBox.y = -300
-			this.tooltipBox.scale.setTo(.8);
+			this.tooltipBox.scale.setTo(1);
 			
 			if(this.tooltipActive){
 				this.tooltipBox.y = -300
@@ -1436,7 +1510,7 @@ BasicGame.Game.prototype = {
 			this.getApp.y = 450;
 			this.tooltipBox.x = 400;
 			this.tooltipBox.y = 1000;
-			this.tooltipBox.scale.setTo(.8);
+			this.tooltipBox.scale.setTo(1);
 			
 			if(this.tooltipActive){
 				this.tooltipBox.y = 1000;
