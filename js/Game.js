@@ -450,7 +450,7 @@ BasicGame.Game.prototype = {
 		////Text lines
 		this.tooltipBox = this.add.sprite(400,1000,'tooltip');
 		this.tooltipBox.anchor.setTo(.5,.5);
-		//this.tooltipBox.scale.setTo(1.6);
+		this.tooltipBox.scale.setTo(1.6);
 		this.tooltipBox.inputEnabled = true;
 		this.tooltipBox.events.onInputDown.add(this.closeTipBox,this);
 		this.tooltipActive = false;
@@ -671,7 +671,7 @@ BasicGame.Game.prototype = {
 			this.getApp.y = 600;
 			this.tooltipBox.x = 400;
 			this.tooltipBox.y = -300
-			this.tooltipBox.scale.setTo(1.6);
+			//this.tooltipBox.scale.setTo(1.6);
 			
 			if(this.tooltipActive){
 				this.tooltipBox.y = -300
@@ -707,7 +707,7 @@ BasicGame.Game.prototype = {
 			this.getApp.y = 450;
 			this.tooltipBox.x = 400;
 			this.tooltipBox.y = 1000;
-			this.tooltipBox.scale.setTo(1);
+			//this.tooltipBox.scale.setTo(1);
 			
 			if(this.tooltipActive){
 				this.tooltipBox.y = 1000;
