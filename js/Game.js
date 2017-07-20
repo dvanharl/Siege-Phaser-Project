@@ -648,7 +648,7 @@ BasicGame.Game.prototype = {
 			this.enterTutorial();
 		}
 		
-		if((window.innerWidth/window.innerHeight) <= (3/4)){
+		/*if((window.innerWidth/window.innerHeight) <= (3/4)){
 			this.landscape = false;
 			this.camera.setPosition(100,0);
 			this.scale.setGameSize(600,900);
@@ -718,7 +718,12 @@ BasicGame.Game.prototype = {
 				this.tooltipBox.y = 1000;
 				this.openTipBox(this.tipClass);
 			}
-		}
+		}*/
+		
+		this.landscape = true;
+		this.orientationUpdate();
+		this.landscape = false;
+		this.orientationUpdate();
 		
 		
     },
