@@ -8,6 +8,7 @@
 	"hide_countdown_close_button_on_first_action": false,
 	"hideCloseButtonTime": 5,
 	"countDownCloseButton": true,
+	"Property3":1,
 	"preloaderStartCountdown": true,
 	"didInteractTimeLimit": 30,
 	"didInteractTimeLimitEnabled": true,

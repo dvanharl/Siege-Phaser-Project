@@ -494,8 +494,16 @@ BasicGame.Game.prototype = {
 		if(!this.countDownCloseButton){
 			this.hideCloseButtonTime = 0;
 		}
+		if(this.gameOptions.Property3 == 2){
+			this.closeButton = this.add.sprite(775,25,'buttonClose');
+		}else if(this.gameOptions.Property3 == 3){
+			this.closeButton = this.add.sprite(775,575,'buttonClose');
+		}else if(this.gameOptions.Property3 == 4){
+			this.closeButton = this.add.sprite(25,775,'buttonClose');
+		}else{
+			this.closeButton = this.add.sprite(25,25,'buttonClose');
+		}
 		
-		this.closeButton = this.add.sprite(25,25,'buttonClose');
 		this.closeButton.scale.setTo(.5);
 		this.closeButton.anchor.setTo(.5,.5);
 		this.closeButton.inputEnabled = true;
@@ -1380,12 +1388,12 @@ BasicGame.Game.prototype = {
 	},
 		
 	orientationUpdate: function() {
+		this.scale.maxHeight = window.innerHeight;
+		//this.scale.maxHeight = document.getElementById("game").offsetHeight;
 		if(this.landscape){
-			this.scale.maxHeight = window.innerHeight;
 			this.scale.maxWidth = this.scale.maxHeight *(4/3);
 		}else{
-			this.scale.maxHeight = window.innerHeight;
-			this.scale.maxWidth = this.scale.maxHeight *(3/2);
+			this.scale.maxWidth = this.scale.maxHeight *(2/3);
 		}
 		
 		
@@ -1414,7 +1422,19 @@ BasicGame.Game.prototype = {
 			this.gameOverBox.y = 450;
 			this.gameOverText.y = 330;
 			this.timeUpText.y = 330;
-			this.closeButton.x = 125;
+			if(this.gameOptions.Property3 == 2){
+				this.closeButton.x = 125;
+				this.closeButton.y = 25;
+			}else if(this.gameOptions.Property3 == 3){
+				this.closeButton.x = 675;
+				this.closeButton.y = 25;
+			}else if(this.gameOptions.Property3 == 4){
+				this.closeButton.x = 675;
+				this.closeButton.y = 875;
+			}else{
+				this.closeButton.x = 125;
+				this.closeButton.y = 875;
+			}
 			this.tryAgain.y = 500;
 			this.getApp.y = 600;
 			this.tooltipBox.x = 400;
@@ -1449,7 +1469,19 @@ BasicGame.Game.prototype = {
 			this.gameOverBox.y = 300;
 			this.gameOverText.y = 180;
 			this.timeUpText.y = 180;
-			this.closeButton.x = 25;
+			if(this.gameOptions.Property3 == 2){
+				this.closeButton.x = 25;
+				this.closeButton.y = 25;
+			}else if(this.gameOptions.Property3 == 3){
+				this.closeButton.x = 775;
+				this.closeButton.y = 25;
+			}else if(this.gameOptions.Property3 == 4){
+				this.closeButton.x = 775;
+				this.closeButton.y = 575;
+			}else{
+				this.closeButton.x = 25;
+				this.closeButton.y = 575;
+			}
 			this.tryAgain.y = 350;
 			this.getApp.y = 450;
 			this.tooltipBox.x = 400;
@@ -1559,7 +1591,7 @@ BasicGame.Game.prototype = {
 		this.game.debug.text(this.tutorialEnable,100,100);
 		this.game.debug.text(this.tutorialStageOptions,100,125);
 		this.game.debug.text(this.tutorialStructures[this.stage],100,150); */
-		this.game.debug.text(this.scale.parentScaleFactor,100,150);
-		this.game.debug.text(this.scale.height,100,125);
+		//this.game.debug.text(this.scale.parentScaleFactor,100,150);
+		//this.game.debug.text(this.scale.height,100,125);
 	}
 };
