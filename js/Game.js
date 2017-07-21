@@ -131,10 +131,10 @@ BasicGame.Game.prototype = {
 		//Background
 		this.map = this.add.sprite(0,0,'map');
 		////Roads
-		this.road1 = this.add.sprite(65,250,'road');
+		/*this.road1 = this.add.sprite(65,250,'road');
 		this.road1.scale.setTo(2);
 		this.road3 = this.add.sprite(225,160,'road');
-		this.road3.scale.setTo(2);
+		this.road3.scale.setTo(2);*/
 		
 		
 		//Initial Structures - Palace and Wall
@@ -463,11 +463,11 @@ BasicGame.Game.prototype = {
 		
 		this.blackScreen = this.add.sprite(0,0,'blackScreen');
 		this.blackScreen.alpha = 0;
-		this.blackScreen.scale.setTo(2);
+		this.blackScreen.scale.setTo(4);
 		
 		this.gameOverBox = this.add.sprite(400,300,'gameover');
 		this.gameOverBox.anchor.setTo(.5,.5);
-		//this.gameOverBox.scale.setTo(.5);
+		this.gameOverBox.scale.setTo(2);
 		this.gameOverBox.kill();
 		
 		this.getApp = this.add.sprite(450,450,'buttonGetApp');
@@ -1497,7 +1497,7 @@ BasicGame.Game.prototype = {
 	
 	gameDefeat: function() {
 		this.lost = true;
-		this.add.tween(this.defeat.scale).to({x:1,y:1},500,Phaser.Easing.Linear.None,true,0,0,false);
+		this.add.tween(this.defeat.scale).to({x:4,y:4},500,Phaser.Easing.Linear.None,true,0,0,false);
 		this.time.events.add(1000, function(){	
 			this.gameOver();
 		},this);

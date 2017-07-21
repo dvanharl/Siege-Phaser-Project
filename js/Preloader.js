@@ -95,7 +95,7 @@ BasicGame.Preloader.prototype = {
 		this.load.image('buttonClose','assets/UI/button-close2.png');
 		this.load.image('buttonGetApp','assets/UI/button-get-app.png');
 		this.load.image('buttonTryAgain','assets/UI/button-try-again.png');
-		this.load.image('blackScreen','assets/UI/blackscreen.png');
+		this.load.image('blackScreen','assets/UI/blackscreen.jpg');
 		this.load.image('buttonInstallNow','assets/UI/button-install-now.png');
 		this.load.spritesheet('purchaseFrame','assets/UI/purchase-frame.png',800,780,2);
 		

@@ -1,7 +1,7 @@
 {
 	"preloader": true,
 	"preloader_logo": true,
-	"preloader_option": 3,
+	"preloader_option": 1,
 	"preloader_text_option": 2,
 	"banner": true,
 	"banner_clickable_on_show":true,
