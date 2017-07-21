@@ -533,7 +533,7 @@ BasicGame.Game.prototype = {
 		}
 		
 		style = {font:"14px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
-		style2 = {font:"14px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
+		style2 = {font:"24px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
 		
 		
 		this.watchtowerText = this.add.text(20,0,'Watchtowers can attack enemy troops from any angle.', style);
