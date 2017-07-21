@@ -10,7 +10,11 @@ BasicGame.Boot.prototype = {
         this.stage.disableVisibilityChange = true;
 		
 		//Scale game window
+		this.scale.maxHeight = window.innerHeight;
+		
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		this.scale.width = this.scale.height *(4/3);
+		
 		//this.scale.
 		
     },

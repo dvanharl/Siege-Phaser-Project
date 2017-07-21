@@ -1380,6 +1380,13 @@ BasicGame.Game.prototype = {
 	},
 		
 	orientationUpdate: function() {
+		if(this.landscape){
+			this.scale.maxHeight = window.innerHeight;
+			this.scale.maxWidth = this.scale.maxHeight *(4/3);
+		}else{
+			this.scale.maxHeight = window.innerHeight;
+			this.scale.maxWidth = this.scale.maxHeight *(3/2);
+		}
 		//If window scale hits a certain ratio to switch from portrait to landscape or vice versa, change orientation and adjust sprites accordingly
 		if((window.innerWidth/window.innerHeight) <= (3/4) && this.landscape){
 			this.landscape = false;
@@ -1550,6 +1557,7 @@ BasicGame.Game.prototype = {
 		this.game.debug.text(this.tutorialEnable,100,100);
 		this.game.debug.text(this.tutorialStageOptions,100,125);
 		this.game.debug.text(this.tutorialStructures[this.stage],100,150); */
-		//this.game.debug.text(this.tutorialPointer,100,150);
+		this.game.debug.text(this.scale.width,100,150);
+		this.game.debug.text(this.scale.height,100,125);
 	}
 };
