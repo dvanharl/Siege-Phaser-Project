@@ -77,7 +77,7 @@ BasicGame.Preloader.prototype = {
 		//Units
 		this.load.spritesheet('enemySoldiers','assets/Units/enemy_soldiers.png',96,86,21);
 		this.load.spritesheet('enemyHero','assets/Units/enemy_hero.png',143,143,36);
-		this.load.spritesheet('barracksSoldier','assets/Units/barracks_soldier.png',317,302,26)
+		this.load.spritesheet('barracksSoldier','assets/Units/barracks_soldier.png',126.8077,121,26)
 		this.load.image('cannonball','assets/Units/cannonball.png');
 		this.load.image('healthGreen','assets/Units/health_bar_green.png');
 		this.load.image('healthRed','assets/Units/health_bar_red.png');

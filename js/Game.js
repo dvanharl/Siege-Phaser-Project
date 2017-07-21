@@ -412,8 +412,8 @@ BasicGame.Game.prototype = {
 		this.iconMine = this.add.tween(this.menu.children[4].scale).to({x:.9,y:.9},500,Phaser.Easing.Linear.None,false,0,-1,true);
 		//////Barracks
 		this.menu.create(this.menu.children[1].x,this.menu.children[1].y,'barracksRed');
-		this.menu.children[5].scale.setTo(.95);
-		this.iconBarracks = this.add.tween(this.menu.children[5].scale).to({x:.9,y:.9},500,Phaser.Easing.Linear.None,false,0,-1,true);
+		this.menu.children[5].scale.setTo(.8);
+		this.iconBarracks = this.add.tween(this.menu.children[5].scale).to({x:.7,y:.7},500,Phaser.Easing.Linear.None,false,0,-1,true);
 		//////Watchtower
 		this.menu.create(this.menu.children[2].x+5,this.menu.children[2].y-25,'watchtowerRed');
 		this.iconWatchtower = this.add.tween(this.menu.children[6].scale).to({x:.9,y:.9},500,Phaser.Easing.Linear.None,false,0,-1,true);
@@ -470,7 +470,7 @@ BasicGame.Game.prototype = {
 		this.gameOverBox.kill();
 		
 		this.getApp = this.add.sprite(450,450,'buttonGetApp');
-		//this.getApp.scale.setTo(.2);
+		//this.getApp.scale.setTo(.1);
 		this.getApp.anchor.setTo(.5,.5);
 		this.getApp.inputEnabled = true;
 		this.getApp.input.useHandCursor = true;
@@ -511,7 +511,7 @@ BasicGame.Game.prototype = {
 		//Install Now Button
 		this.installNow = this.add.sprite(400,50,'buttonInstallNow');
 		this.installNow.anchor.setTo(.5,.5);
-		this.installNow.scale.setTo(.2);
+		this.installNow.scale.setTo(1);
 		this.installNow.inputEnabled = true;
 		this.installNow.input.useHandCursor = true;
 		if(this.banner_clickable_on_show){
