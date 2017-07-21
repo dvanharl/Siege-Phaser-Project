@@ -468,6 +468,10 @@ BasicGame.Game.prototype = {
 		this.gameOverBox = this.add.sprite(400,300,'gameover');
 		this.gameOverBox.anchor.setTo(.5,.5);
 		this.gameOverBox.scale.setTo(2);
+		this.gameOverBox.inputEnabled = true;
+		this.gameOverBox.events.onInputUp.add(function(){
+			window.open(this.siteLink);
+		},this);
 		this.gameOverBox.kill();
 		
 		this.getApp = this.add.sprite(450,450,'buttonGetApp');
@@ -534,7 +538,7 @@ BasicGame.Game.prototype = {
 		}
 		
 		style = {font:"14px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
-		style2 = {font:"24px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
+		style2 = {font:"24px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.gameOverBox.width/1.2};
 		
 		
 		this.watchtowerText = this.add.text(20,0,'Watchtowers can attack enemy troops from any angle.', style);
@@ -704,6 +708,7 @@ BasicGame.Game.prototype = {
 			this.gameEnded = true;
 			this.gameOver();
 		}
+		
 	},
 	
 	enterTutorial: function(){
@@ -1129,7 +1134,7 @@ BasicGame.Game.prototype = {
 							temp.anchor.setTo(.49,.6);
 							temp.scale.setTo(2.2);
 							temp.animations.add('upgrade');
-							temp.play('upgrade',15,false, true);
+							temp.play('upgrade',30,false, true);
 							this.camera.shake(0.005,125,true,Phaser.Camera.SHAKE_BOTH,true);
 							this.gold -= thing.health*100;
 							thing.health *= 2;
@@ -1535,10 +1540,13 @@ BasicGame.Game.prototype = {
 			//Spawn buttons (do not include replay button if already replayed)
 			getApp.revive();
 		
+			
 		
 			if(!this.played){
 				tryAgain.revive();
 			}
+			
+			
 		},this,this.lost,this.gameOverBox,this.gameOverText,this.timeUpText,this.getApp,this.tryAgain);
 	},
 	
