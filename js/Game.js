@@ -155,11 +155,11 @@ BasicGame.Game.prototype = {
 		this.plotTween = [];
 		for(var i=0;i<11;i++){
 			this.plots.create(600,0,'plot');
-			this.plots.children[i].scale.set(.92);
-			this.plotTween.push(this.add.tween(this.plots.children[i].scale).to({x:.85,y:.85},500,Phaser.Easing.Linear.None,false,0,-1,true));
+			this.plots.children[i].scale.set(2);
+			this.plotTween.push(this.add.tween(this.plots.children[i].scale).to({x:1.85,y:1.85},500,Phaser.Easing.Linear.None,false,0,-1,true));
 			this.plotTween[i].start();
 			this.plotTween[i].pause();
-			this.plots.children[i].scale.set(.92);
+			this.plots.children[i].scale.set(2);
 			this.plots.children[i].anchor.set(.5,.5);
 			this.plots.children[i].inputEnabled = true;
 			if(i<6){
@@ -282,7 +282,7 @@ BasicGame.Game.prototype = {
 				for(var i=0;i<6;i++){
 					if(this.plots.children[i].health != -1){
 						this.plotTween[i].pause();
-						this.plots.children[i].scale.setTo(.92);
+						this.plots.children[i].scale.setTo(2);
 					}
 				}
 				if(this.toolTipActive){
@@ -334,7 +334,7 @@ BasicGame.Game.prototype = {
 				this.holding = null;
 				for(var i=6;i<11;i++){
 					this.plotTween[i].pause();
-					this.plots.children[i].scale.setTo(.92);
+					this.plots.children[i].scale.setTo(2);
 				}
 				for(var i=0;i<6;i++){
 					if(this.plots.children[i].health > 0){
@@ -375,7 +375,7 @@ BasicGame.Game.prototype = {
 			}
 			for(var i=0;i<11;i++){
 				this.plotTween[i].pause();
-				this.plots.children[i].scale.setTo(.92);
+				this.plots.children[i].scale.setTo(2);
 			}
 		},this);
 		//////Wall
