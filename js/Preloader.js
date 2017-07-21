@@ -38,6 +38,7 @@ BasicGame.Preloader.prototype = {
 			}else if(this.preloader_option == 3){
 				this.preloadBar = this.add.sprite(175, 200, 'preloaderBar');
 				this.preloadBarFill = this.add.sprite(175, 200, 'preloaderBarFill');
+				this.preloadBarFill.scale.setTo(2.5);
 				this.load.setPreloadSprite(this.preloadBarFill);
 			}
 			if(this.preloader_text_option == 1){
@@ -100,7 +101,7 @@ BasicGame.Preloader.prototype = {
 		
 	},
 
-	create: function () {		
+	create: function () {
 		this.state.start('Game',true,false,this.gameOptions,this.gameOptions.banner,this.gameOptions.banner_clickable_on_show,this.gameOptions.hide_countdown_close_button_on_first_action,this.gameOptions.hideCloseButtonTime,this.gameOptions.countDownCloseButton,this.gameOptions.didInteractTimeLimit,this.gameOptions.didInteractTimeLimitEnabled,this.gameOptions.ClickURL,this.gameOptions.MAX_PLAY_TIME,this.gameOptions.tutorial);
 	},
 	
