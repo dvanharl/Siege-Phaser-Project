@@ -9,7 +9,7 @@
 	"hideCloseButtonTime": 5,
 	"countDownCloseButton": true,
 	"preloaderStartCountdown": true,
-	"didInteractTimeLimit": 15,
+	"didInteractTimeLimit": 30,
 	"didInteractTimeLimitEnabled": true,
 	"ClickURL": "http://www.google.com/",
 	"MAX_PLAY_TIME":90,

@@ -132,9 +132,9 @@ BasicGame.Game.prototype = {
 		this.map = this.add.sprite(0,0,'map');
 		////Roads
 		this.road1 = this.add.sprite(65,250,'road');
-		//this.road1.scale.setTo(.17);
+		this.road1.scale.setTo(2);
 		this.road3 = this.add.sprite(225,160,'road');
-		//this.road3.scale.setTo(.17);
+		this.road3.scale.setTo(2);
 		
 		
 		//Initial Structures - Palace and Wall
@@ -228,14 +228,14 @@ BasicGame.Game.prototype = {
 		this.wallGreen = this.add.sprite(550,50,'wallBarGreen');
 		this.wallGreen.scale.setTo(.15);
 		this.wallUI = this.add.sprite(550,50,'wallHP');
-		this.wallUI.scale.setTo(.15);
+		//this.wallUI.scale.setTo(.15);
 		this.wallUI.alpha = .75;
 		this.goldUI = this.add.sprite(150,100,'gold');
 		this.goldUI.anchor.setTo(.5,.5);
-		this.goldUI.scale.setTo(.25);
-		this.goldText = this.add.text(120,5,""+(this.gold/100),{fill:"black"});
+		//this.goldUI.scale.setTo(.25);
+		this.goldText = this.add.text(30,2,""+(this.gold/100),{fill:"black"});
 		this.goldText.anchor.setTo(.5,.5);
-		this.goldText.scale.setTo(4);
+		this.goldText.scale.setTo(1);
 		this.goldUI.addChild(this.goldText);
 		this.spawnX = 0;
 		this.spawnY = 0;
@@ -524,6 +524,7 @@ BasicGame.Game.prototype = {
 		}
 		
 		style = {font:"14px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
+		style2 = {font:"14px Arial",fill:"#4f3f2d",wordWrap:true,wordWrapWidth:this.tooltipBox.width/2};
 		
 		
 		this.watchtowerText = this.add.text(20,0,'Watchtowers can attack enemy troops from any angle.', style);
@@ -536,10 +537,10 @@ BasicGame.Game.prototype = {
 		this.barracksText.anchor.setTo(.5,.5);
 		this.upgradeText = this.add.text(20,0,'Tap on structures marked with the arrow to upgrade their abilities.', style);
 		this.upgradeText.anchor.setTo(.5,.5);
-		this.gameOverText = this.add.text(400,180, 'YOU LOST! INSTALL GAME OF WAR* AND BUILD YOUR EMPIRE IN THIS REAL TIME GAME OF GLOBAL CONQUEST.', style);
+		this.gameOverText = this.add.text(400,180, 'YOU LOST! INSTALL GAME OF WAR* AND BUILD YOUR EMPIRE IN THIS REAL TIME GAME OF GLOBAL CONQUEST.', style2);
 		this.gameOverText.anchor.setTo(.5,.5);
 		this.gameOverText.kill();
-		this.timeUpText = this.add.text(400,180,'TIME\'S UP! INSTALL GAME OF WAR* AND BUILD YOUR EMPIRE IN THIS REAL TIME GAME OF GLOBAL CONQUEST', style);
+		this.timeUpText = this.add.text(400,180,'TIME\'S UP! INSTALL GAME OF WAR* AND BUILD YOUR EMPIRE IN THIS REAL TIME GAME OF GLOBAL CONQUEST', style2);
 		this.timeUpText.anchor.setTo(.5,.5);
 		this.timeUpText.kill();
 		
@@ -1063,15 +1064,15 @@ BasicGame.Game.prototype = {
 					//Barracks Guard
 					temp.addChild(this.add.sprite(-37.5,15,'barracksSoldier'));
 					temp.children[0].health = 100;
-					temp.children[0].scale.setTo(.4);
+					//temp.children[0].scale.setTo(.4);
 					temp.children[0].anchor.setTo(.5,.5);
 					temp.children[0].animations.add('idle',[0,1,2,3,4,5,6,5,4,3,2,1],15,true);
 					temp.children[0].animations.add('attack',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],24,true);
 					temp.children[0].addChild(this.add.sprite(-107,-100,'healthRed'));
-					temp.children[0].children[0].scale.setTo(1);
+					temp.children[0].children[0].scale.setTo(.4);
 					temp.children[0].children[0].anchor.setTo(.07,.5);
 					temp.children[0].addChild(this.add.sprite(-107,-100,'healthGreen'));
-					temp.children[0].children[1].scale.setTo(1);
+					temp.children[0].children[1].scale.setTo(.4);
 					temp.children[0].children[1].anchor.setTo(.07,.5);
 					temp.children[0].kill();
 					break;
