@@ -508,6 +508,7 @@ BasicGame.Game.prototype = {
 		this.closeButton.scale.setTo(.5);
 		this.closeButton.anchor.setTo(.5,.5);
 		this.closeButton.inputEnabled = true;
+		this.closeButton.input.pixelPerfectClick = true;
 		this.closeButton.input.useHandCursor = true;
 		this.closeButton.events.onInputUp.add(function(){
 			this.game.destroy();
@@ -1471,17 +1472,17 @@ BasicGame.Game.prototype = {
 			this.gameOverText.y = 180;
 			this.timeUpText.y = 180;
 			if(this.gameOptions.Property3 == 2){
-				this.closeButton.x = 25;
+				this.closeButton.x = 775;
 				this.closeButton.y = 25;
 			}else if(this.gameOptions.Property3 == 3){
 				this.closeButton.x = 775;
-				this.closeButton.y = 25;
+				this.closeButton.y = 575;
 			}else if(this.gameOptions.Property3 == 4){
-				this.closeButton.x = 775;
+				this.closeButton.x = 25;
 				this.closeButton.y = 575;
 			}else{
 				this.closeButton.x = 25;
-				this.closeButton.y = 575;
+				this.closeButton.y = 25;
 			}
 			this.tryAgain.y = 350;
 			this.getApp.y = 450;
