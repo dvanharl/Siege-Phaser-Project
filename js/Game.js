@@ -140,6 +140,7 @@ BasicGame.Game.prototype = {
 		//Initial Structures - Palace and Wall
 		this.palace = this.add.sprite(50,100,'palaceRed');
 		this.palace.anchor.setTo(.5,.5);
+		this.palace.scale.setTo(4);
 		this.wall3 = this.add.sprite(450,26,'wall-a');
 		this.wall3.anchor.setTo(.5,.5);
 		this.wall3.scale.setTo(3);
