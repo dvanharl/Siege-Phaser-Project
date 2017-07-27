@@ -515,6 +515,7 @@ BasicGame.Game.prototype = {
 		this.closeButton.input.pixelPerfectClick = true;
 		this.closeButton.input.useHandCursor = true;
 		this.closeButton.events.onInputUp.add(function(){
+			//close();
 			this.game.destroy();
 		},this);
 		this.closeButton.kill();
