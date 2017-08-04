@@ -18,8 +18,8 @@
 	"install_banner_option":1,
 	"install_banner_text":["We're under attack! Build a tower to defend against the enemy troops."],
 	"stage1_enable":true,
-	"stage1_message1":true,
-	"stage1_pointer":true,
+	"stage1_message1":false,
+	"stage1_pointer":false,
 	"stage2_enable":true,
 	"stage2_message1":true,
 	"stage2_pointer":true

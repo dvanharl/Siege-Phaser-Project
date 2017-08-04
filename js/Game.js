@@ -247,7 +247,7 @@ BasicGame.Game.prototype = {
 		this.menu.children[0].inputEnabled = true;
 		this.menu.children[0].events.onInputDown.add(function(){
 			if(this.menu.children[0].frame == 1 && !this.gameEnded){
-				if(this.firstGold){
+				if(gameOptions.stage2_message1 && this.firstGold){
 					this.firstGold = false;
 					this.openTipBox(1);
 				}
@@ -295,7 +295,7 @@ BasicGame.Game.prototype = {
 		this.menu.children[1].inputEnabled = true;
 		this.menu.children[1].events.onInputDown.add(function(){
 			if(this.menu.children[1].frame == 1 && !this.gameEnded){
-				if(this.firstBarracks){
+				if(this.gameOptions.stage1_message1 && this.firstBarracks){
 					this.firstBarracks = false;
 					this.openTipBox(2);
 				}
