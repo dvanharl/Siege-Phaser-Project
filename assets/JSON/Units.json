@@ -1,0 +1,60 @@
+{"frames": {
+
+"barracks_soldier.png":
+{
+	"frame": {"x":805,"y":89,"w":568,"h":659},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":34,"w":568,"h":659},
+	"sourceSize": {"w":630,"h":726}
+},
+"cannonball.png":
+{
+	"frame": {"x":1375,"y":89,"w":94,"h":93},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":10,"w":94,"h":93},
+	"sourceSize": {"w":102,"h":117}
+},
+"enemy_hero.png":
+{
+	"frame": {"x":1,"y":89,"w":802,"h":811},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":26,"y":38,"w":802,"h":811},
+	"sourceSize": {"w":858,"h":858}
+},
+"enemy_soldiers.png":
+{
+	"frame": {"x":1,"y":1,"w":2001,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":13,"y":0,"w":2001,"h":86},
+	"sourceSize": {"w":2016,"h":86}
+},
+"health_bar_green.png":
+{
+	"frame": {"x":1471,"y":89,"w":152,"h":13},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":8,"w":152,"h":13},
+	"sourceSize": {"w":172,"h":34}
+},
+"health_bar_red.png":
+{
+	"frame": {"x":1375,"y":184,"w":171,"h":33},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":171,"h":33},
+	"sourceSize": {"w":172,"h":34}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Units.png",
+	"format": "RGBA8888",
+	"size": {"w":2003,"h":901},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:7cee3d05f39e5373dd369efadf766f2f:ee8868b2ec98d348f676a8d0e4833fc3:ba53b97ee44f14938948e4510aec257e$"
+}
+}

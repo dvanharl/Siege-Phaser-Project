@@ -1,5 +1,4 @@
 window.onload = function() {
-	//var game = new Phaser.Game(800,600, Phaser.AUTO, 'game' );
 	var game = new Phaser.Game(window.innerWidth *window.devicePixelRatio,window.innerHeight*window.devicePixelRatio, Phaser.CANVAS, 'game' );
 
 	//Add Game States

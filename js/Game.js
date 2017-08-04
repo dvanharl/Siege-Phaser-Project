@@ -1,4 +1,3 @@
-
 BasicGame.Game = function (game) {
 	this.testing = 0;
 	this.tutorialStageOptions = null;
@@ -19,8 +18,6 @@ BasicGame.Game = function (game) {
 	
 	this.didInteractTimeLimit = null;
 	this.didInteractTimeLimitEnabled = null;
-	
-	
 	
 	this.MAX_PLAY_TIME = 90;
 	
@@ -130,17 +127,10 @@ BasicGame.Game.prototype = {
 		
 		//Background
 		this.map = this.add.sprite(0,0,'map');
-		////Roads
-		/*this.road1 = this.add.sprite(65,250,'road');
-		this.road1.scale.setTo(2);
-		this.road3 = this.add.sprite(225,160,'road');
-		this.road3.scale.setTo(2);*/
-		
 		
 		//Initial Structures - Palace and Wall
 		this.palace = this.add.sprite(50,100,'palaceRed');
 		this.palace.anchor.setTo(.5,.5);
-		this.palace.scale.setTo(4);
 		this.wall3 = this.add.sprite(450,26,'wall-a');
 		this.wall3.anchor.setTo(.5,.5);
 		this.wall3.scale.setTo(3);
@@ -516,7 +506,12 @@ BasicGame.Game.prototype = {
 		this.closeButton.input.useHandCursor = true;
 		this.closeButton.events.onInputUp.add(function(){
 			//close();
-			this.game.destroy();
+			//this.game.destroy();
+			if(window.mraid){
+				window.mraid.close();
+			}else{
+				window.close();
+			}
 		},this);
 		this.closeButton.kill();
 		this.time.events.add(this.hideCloseButtonTime*1000,function(){
@@ -630,25 +625,22 @@ BasicGame.Game.prototype = {
 		this.timeMultiplier = 1;
 		this.enemyTimer = this.time.events.loop(5000 * this.timeMultiplier, this.enemySpawn,this);
 		
-		this.tutorialStageOptions = [];
-		for(i in this.gameOptions.TUTORIAL_SETTINGS){
-			if(i == 'install_banner'){
-				//Select text by option, if not selected, pick 
-				if(this.gameOptions.TUTORIAL_SETTINGS.install_banner.text != null){
-					this.introText = this.add.text(20,0,this.gameOptions.TUTORIAL_SETTINGS.install_banner.text[this.gameOptions.TUTORIAL_SETTINGS.install_banner.option-1], style);
-					
-				}else{
-					this.introText = this.add.text(0,0,"", style);
-				}
-				this.introText.anchor.setTo(.5,.5);
-				this.tooltipBox.addChildAt(this.introText,0);
-			}else{
-				//Turorial stage Options
-				this.tutorialStageOptions.push(this.gameOptions.TUTORIAL_SETTINGS[i].enable);
-				this.tutorialStageOptions.push(this.gameOptions.TUTORIAL_SETTINGS[i].message1);
-				this.tutorialStageOptions.push(this.gameOptions.TUTORIAL_SETTINGS[i].pointer);
-			}
+		//Get tutorial options
+		if(this.gameOptions.install_banner_text != null && this.gameOptions.install_banner_text[this.gameOptions.install_banner_option-1]){
+			this.introText = this.add.text(20,0,this.gameOptions.install_banner_text[this.gameOptions.install_banner_option-1], style);	
+		}else{
+			this.introText = this.add.text(0,0,"", style);
 		}
+		this.introText.anchor.setTo(.5,.5);
+		this.tooltipBox.addChildAt(this.introText,0);
+		
+		this.tutorialStageOptions = [];
+		this.tutorialStageOptions.push(this.gameOptions.stage1_enable);
+		this.tutorialStageOptions.push(this.gameOptions.stage1_message1);
+		this.tutorialStageOptions.push(this.gameOptions.stage1_pointer);
+		this.tutorialStageOptions.push(this.gameOptions.stage2_enable);
+		this.tutorialStageOptions.push(this.gameOptions.stage2_message1);
+		this.tutorialStageOptions.push(this.gameOptions.stage2_pointer);
 		
 		if(!this.inTutorial){
 			this.gameTimer = this.time.events.add(this.MAX_PLAY_TIME*1000,function(){
