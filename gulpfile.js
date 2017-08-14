@@ -3,7 +3,7 @@ var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 
 gulp.task('default', function(){
-	gulp.src('jsCopy/*.js')
+	gulp.src('js/*.js')
 	.pipe(uglify())
 	.pipe(concat('game.min.js'))
 	.pipe(gulp.dest('builds'))

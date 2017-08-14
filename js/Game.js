@@ -1274,7 +1274,7 @@ BasicGame.Game.prototype = {
 					if(this.structures.children[i].health <= 0){
 						this.structures.children[i].children[0].children[1].scale.x = 0;
 					}else{
-						this.structures.children[i].children[0].children[1].scale.x = this.structures.children[i].children[0].health/100;
+						this.structures.children[i].children[0].children[1].scale.x = .4 * (this.structures.children[i].children[0].health/100);
 					}
 					for(j=0;j<this.enemies.children.length;j++){
 						if(this.structures.children[i].children[0].overlap(this.enemies.children[j])){
