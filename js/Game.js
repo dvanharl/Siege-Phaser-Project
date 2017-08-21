@@ -104,13 +104,17 @@ BasicGame.Game.prototype = {
 		this.banner = banner;
 		this.banner_clickable_on_show = banner_clickable_on_show;
 		this.hide_countdown_close_button_on_first_action = hide_countdown_close_button_on_first_action;
-		this.hideCloseButtonTime = hideCloseButtonTime;
+		this.hideCloseButtonTime = parseInt(hideCloseButtonTime);
 		this.countDownCloseButton = countDownCloseButton;
-		this.didInteractTimeLimit = didInteractTimeLimit;
+		this.didInteractTimeLimit = parseInt(didInteractTimeLimit);
 		this.didInteractTimeLimitEnabled = didInteractTimeLimitEnabled;
 		this.siteLink = ClickURL;
 		this.MAX_PLAY_TIME = MAX_PLAY_TIME;
-		this.inTutorial = tutorial;
+		if(tutorial == "false"){
+			this.inTutorial = false;
+		}else{
+			this.inTutorial = true;
+		}
 	},
 	
     create: function () {
@@ -247,7 +251,7 @@ BasicGame.Game.prototype = {
 		this.menu.children[0].inputEnabled = true;
 		this.menu.children[0].events.onInputDown.add(function(){
 			if(this.menu.children[0].frame == 1 && !this.gameEnded){
-				if(gameOptions.stage2_message1 && this.firstGold){
+				if(gameOptions.stage2_message1 == "true" && this.firstGold){
 					this.firstGold = false;
 					this.openTipBox(1);
 				}
@@ -295,7 +299,7 @@ BasicGame.Game.prototype = {
 		this.menu.children[1].inputEnabled = true;
 		this.menu.children[1].events.onInputDown.add(function(){
 			if(this.menu.children[1].frame == 1 && !this.gameEnded){
-				if(this.gameOptions.stage1_message1 && this.firstBarracks){
+				if(this.gameOptions.stage1_message1 == "true" && this.firstBarracks){
 					this.firstBarracks = false;
 					this.openTipBox(2);
 				}
@@ -486,14 +490,14 @@ BasicGame.Game.prototype = {
 		this.tryAgain.kill();
 		
 		//Close Button
-		if(!this.countDownCloseButton){
+		if(this.countDownCloseButton != "true"){
 			this.hideCloseButtonTime = 0;
 		}
-		if(this.gameOptions.Property3 == 2){
+		if(this.gameOptions.Property3 == "2"){
 			this.closeButton = this.add.sprite(775,25,'buttonClose');
-		}else if(this.gameOptions.Property3 == 3){
+		}else if(this.gameOptions.Property3 == "3"){
 			this.closeButton = this.add.sprite(775,575,'buttonClose');
-		}else if(this.gameOptions.Property3 == 4){
+		}else if(this.gameOptions.Property3 == "4"){
 			this.closeButton = this.add.sprite(25,775,'buttonClose');
 		}else{
 			this.closeButton = this.add.sprite(25,25,'buttonClose');
@@ -505,8 +509,6 @@ BasicGame.Game.prototype = {
 		this.closeButton.input.pixelPerfectClick = true;
 		this.closeButton.input.useHandCursor = true;
 		this.closeButton.events.onInputUp.add(function(){
-			//close();
-			//this.game.destroy();
 			if(window.mraid){
 				window.mraid.close();
 			}else{
@@ -524,12 +526,12 @@ BasicGame.Game.prototype = {
 		this.installNow.scale.setTo(1);
 		this.installNow.inputEnabled = true;
 		this.installNow.input.useHandCursor = true;
-		if(this.banner_clickable_on_show){
+		if(this.banner_clickable_on_show == "true"){
 			this.installNow.events.onInputUp.add(function(){
 				window.open(this.siteLink);
 			},this);
 		}
-		if(!this.banner){
+		if(this.banner == "false"){
 			this.installNow.kill();
 		}
 		
@@ -626,10 +628,10 @@ BasicGame.Game.prototype = {
 		this.enemyTimer = this.time.events.loop(5000 * this.timeMultiplier, this.enemySpawn,this);
 		
 		//Get tutorial options
-		if(this.gameOptions.install_banner_text != null && this.gameOptions.install_banner_text[this.gameOptions.install_banner_option-1]){
-			this.introText = this.add.text(20,0,this.gameOptions.install_banner_text[this.gameOptions.install_banner_option-1], style);	
+		if(this.gameOptions.install_banner_text != null){
+			this.introText = this.add.text(20,0,this.gameOptions.install_banner_text, style);	
 		}else{
-			this.introText = this.add.text(0,0,"", style);
+			this.introText = this.add.text(20,0,"", style);
 		}
 		this.introText.anchor.setTo(.5,.5);
 		this.tooltipBox.addChildAt(this.introText,0);
@@ -668,7 +670,7 @@ BasicGame.Game.prototype = {
 		//Gold Text Render
 		this.goldText.setText(parseInt((this.gold/100),10));
 		//Interact Update
-		if(this.didInteractTimeLimitEnabled){
+		if(this.didInteractTimeLimitEnabled == "true"){
 			this.interactUpdate();
 		}
 		
@@ -1076,10 +1078,10 @@ BasicGame.Game.prototype = {
 					temp.children[0].anchor.setTo(.5,.5);
 					temp.children[0].animations.add('idle',[0,1,2,3,4,5,6,5,4,3,2,1],15,true);
 					temp.children[0].animations.add('attack',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],24,true);
-					temp.children[0].addChild(this.add.sprite(-107,-100,'healthRed'));
+					temp.children[0].addChild(this.add.sprite(-33,-50,'healthRed'));
 					temp.children[0].children[0].scale.setTo(.4);
 					temp.children[0].children[0].anchor.setTo(.07,.5);
-					temp.children[0].addChild(this.add.sprite(-107,-100,'healthGreen'));
+					temp.children[0].addChild(this.add.sprite(-33,-50,'healthGreen'));
 					temp.children[0].children[1].scale.setTo(.4);
 					temp.children[0].children[1].anchor.setTo(.07,.5);
 					temp.children[0].kill();

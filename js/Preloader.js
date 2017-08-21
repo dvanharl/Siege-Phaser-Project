@@ -67,22 +67,22 @@ BasicGame.Preloader.prototype = {
 	preload: function () {
 		//Preloader Sprites based on option
 		if(this.preloader){
-			if(this.preloader_option == 1){
+			if(this.preloader_option == "1"){
 				this.spokeCircle = this.add.sprite(400,480, 'preloaderSpokeCircle');
 				this.spokeCircle.anchor.setTo(.5,.8);
-			}else if(this.preloader_option == 2){
+			}else if(this.preloader_option == "2"){
 				this.solidCircle = this.add.sprite(400,300,'preloaderSolidCircle');
 				this.solidCircle.anchor.setTo(.5,.5);
-			}else if(this.preloader_option == 3){
+			}else if(this.preloader_option == "3"){
 				this.preloadBar = this.add.sprite(175, 200, 'preloaderBar');
 				this.preloadBarFill = this.add.sprite(175, 200, 'preloaderBarFill');
 				this.preloadBarFill.scale.setTo(2.5);
 				this.load.setPreloadSprite(this.preloadBarFill);
 			}
-			if(this.preloader_text_option == 1){
+			if(this.preloader_text_option == "1"){
 				this.pleaseWait = this.add.sprite(400,385,'preloaderPleaseWait');
 				this.pleaseWait.anchor.setTo(.5,.5);
-			}else if(this.preloader_text_option == 2){
+			}else if(this.preloader_text_option == "2"){
 				this.loading = this.add.sprite(400,385,'preloaderLoading');
 				this.loading.anchor.setTo(.5,.5);
 			}
@@ -133,14 +133,14 @@ BasicGame.Preloader.prototype = {
 	},
 	
 	loadUpdate: function () {
-		if(this.preloader_start_countdown){
+		if(this.preloader_start_countdown == "true"){
 			if(this.timer <= 0){
 				this.timer = 0;
-				if(this.gameOptions.Property3 == 2){
+				if(this.gameOptions.Property3 == "2"){
 					this.closeButton = this.add.sprite(775,25,'buttonClose');
-				}else if(this.gameOptions.Property3 == 3){
+				}else if(this.gameOptions.Property3 == "3"){
 					this.closeButton = this.add.sprite(775,575,'buttonClose');
-				}else if(this.gameOptions.Property3 == 4){
+				}else if(this.gameOptions.Property3 == "4"){
 					this.closeButton = this.add.sprite(25,775,'buttonClose');
 				}else{
 					this.closeButton = this.add.sprite(25,25,'buttonClose');
