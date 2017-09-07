@@ -54,35 +54,25 @@ BasicGame.Preloader = function (game) {
 };
 
 BasicGame.Preloader.prototype = {
-	init: function (gameOptions, preloader, preloader_logo,preloader_option,preloader_text_option,preloader_start_countdown) {
-		this.gameOptions = gameOptions;
-		this.preloader = preloader;
-		this.preloader_logo = preloader_logo;
-		this.preloader_option = preloader_option;
-		this.preloader_text_option = preloader_text_option;
-		this.preloader_start_countdown = preloader_start_countdown;
-		this.timer = this.gameOptions.hideCloseButtonTime * 60;
-	},
-
 	preload: function () {
 		//Preloader Sprites based on option
-		if(this.preloader){
-			if(this.preloader_option == "1"){
+		if(settings.preloader){
+			if(settings.preloader_option == 1){
 				this.spokeCircle = this.add.sprite(400,480, 'preloaderSpokeCircle');
 				this.spokeCircle.anchor.setTo(.5,.8);
-			}else if(this.preloader_option == "2"){
+			}else if(settings.preloader_option == 2){
 				this.solidCircle = this.add.sprite(400,300,'preloaderSolidCircle');
 				this.solidCircle.anchor.setTo(.5,.5);
-			}else if(this.preloader_option == "3"){
+			}else if(settings.preloader_option == 3){
 				this.preloadBar = this.add.sprite(175, 200, 'preloaderBar');
 				this.preloadBarFill = this.add.sprite(175, 200, 'preloaderBarFill');
 				this.preloadBarFill.scale.setTo(2.5);
 				this.load.setPreloadSprite(this.preloadBarFill);
 			}
-			if(this.preloader_text_option == "1"){
+			if(settings.preloader_text_option == 1){
 				this.pleaseWait = this.add.sprite(400,385,'preloaderPleaseWait');
 				this.pleaseWait.anchor.setTo(.5,.5);
-			}else if(this.preloader_text_option == "2"){
+			}else if(settings.preloader_text_option == 2){
 				this.loading = this.add.sprite(400,385,'preloaderLoading');
 				this.loading.anchor.setTo(.5,.5);
 			}
@@ -119,28 +109,29 @@ BasicGame.Preloader.prototype = {
 		this.load.image('tooltip',toolTip);
 		this.load.image('defeat',defeat);
 		this.load.image('gameover',gameOver);
-		//this.load.image('buttonClose','assets/UI/button-close2.png');
 		this.load.image('buttonGetApp',getApp);
 		this.load.image('buttonTryAgain',tryAgain);
 		this.load.image('blackScreen',blackScreen);
 		this.load.image('buttonInstallNow',installNow);
 		this.load.spritesheet('purchaseFrame',purchaseFrame,800,780,2);
 		
+		this.timer = settings.countDownCloseButton * 60;
+		
 	},
 
 	create: function () {
-		this.state.start('Game',true,false,this.gameOptions,this.gameOptions.banner,this.gameOptions.banner_clickable_on_show,this.gameOptions.hide_countdown_close_button_on_first_action,this.timer,this.gameOptions.countDownCloseButton,this.gameOptions.didInteractTimeLimit,this.gameOptions.didInteractTimeLimitEnabled,this.gameOptions.ClickURL,this.gameOptions.MAX_PLAY_TIME,this.gameOptions.tutorial);
+		this.state.start('Game');
 	},
 	
 	loadUpdate: function () {
-		if(this.preloader_start_countdown == "true"){
+		if(settings.preloader_start_countdown == true){
 			if(this.timer <= 0){
 				this.timer = 0;
-				if(this.gameOptions.Property3 == "2"){
+				if(settings.Property3 == 2){
 					this.closeButton = this.add.sprite(775,25,'buttonClose');
-				}else if(this.gameOptions.Property3 == "3"){
+				}else if(settings.Property3 == 3){
 					this.closeButton = this.add.sprite(775,575,'buttonClose');
-				}else if(this.gameOptions.Property3 == "4"){
+				}else if(settings.Property3 == 4){
 					this.closeButton = this.add.sprite(25,775,'buttonClose');
 				}else{
 					this.closeButton = this.add.sprite(25,25,'buttonClose');

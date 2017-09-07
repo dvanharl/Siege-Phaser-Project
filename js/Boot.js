@@ -24,14 +24,9 @@ BasicGame.Boot.prototype = {
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.scale.width = this.scale.height *(4/3);
 		
-		//this.scale.
-		
     },
 
-    preload: function () {
-		//Load JSON file
-		//this.load.json('options','js/gameOptions.json');
-		
+    preload: function () {		
         //Load preloader assets
 		this.load.image('preloaderPleaseWait', pleaseWait);
 		this.load.image('preloaderSpokeCircle', spokeCircle);
@@ -41,18 +36,10 @@ BasicGame.Boot.prototype = {
 		this.load.image('preloaderBarFill', loadingBarFill);
 		this.load.image('preloaderLoading',loading);
 		this.load.image('buttonClose',buttonClose);
-		/*this.load.image('preloaderPleaseWait', 'assets/Preloader/preloader_please_wait.png');
-		this.load.image('preloaderSpokeCircle', 'assets/Preloader/preloader_spoke_circle.jpg');
-		this.load.image('preloaderSolidCircle', 'assets/Preloader/preloader_solid_circle.jpg');
-		
-        this.load.image('preloaderBar', 'assets/Preloader/preloader_loading_bar.jpg');
-		this.load.image('preloaderBarFill', 'assets/Preloader/preloader_loading_bar_fill.png');
-		this.load.image('preloaderLoading','assets/Preloader/preloader_loading.png');
-		this.load.image('buttonClose','assets/UI/button-close2.png');*/
     },
 
     create: function () {
         //Move to Preloader State
-        this.state.start('Preloader',true, false,gameOptions,gameOptions.preloader,gameOptions.preloader_logo,gameOptions.preloader_option,gameOptions.preloader_text_option,gameOptions.preloaderStartCountdown);
-    }
+        this.state.start('Preloader');
+	}
 };

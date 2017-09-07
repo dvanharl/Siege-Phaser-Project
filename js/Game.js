@@ -4,24 +4,6 @@ BasicGame.Game = function (game) {
 	this.tutorialEnable = null;
 	this.tutorialMessage = null;
 	this.tutorialPointer = null;
-	//Transfered Game Settings
-	this.gameOptions = null;
-	
-	this.banner = null;
-	this.banner_clickable_on_show = false;
-	
-	this.hide_countdown_close_button_on_first_action = null;
-	this.hideCloseButtonTime = null;
-	this.countDownCloseButton = null;
-	
-	this.preloaderStartCountdown = null;
-	
-	this.didInteractTimeLimit = null;
-	this.didInteractTimeLimitEnabled = null;
-	
-	this.MAX_PLAY_TIME = 90;
-	
-	this.siteLink = "http://www.google.com";
 	
 	
 	//Game
@@ -56,7 +38,7 @@ BasicGame.Game = function (game) {
 	this.enemiesSpawned = 0;
 	this.enemiesKilled = 0;
 	
-	this.inTutorial= true;
+	settings.tutorial= true;
 	this.played = false;
 	
 	this.blackScreen = null;
@@ -99,23 +81,22 @@ BasicGame.Game = function (game) {
 };
 
 BasicGame.Game.prototype = {
-	init: function (gameOptions,banner,banner_clickable_on_show,hide_countdown_close_button_on_first_action,hideCloseButtonTime,countDownCloseButton,didInteractTimeLimit,didInteractTimeLimitEnabled,ClickURL,MAX_PLAY_TIME,tutorial) {
-		this.gameOptions = gameOptions;
-		this.banner = banner;
-		this.banner_clickable_on_show = banner_clickable_on_show;
-		this.hide_countdown_close_button_on_first_action = hide_countdown_close_button_on_first_action;
-		this.hideCloseButtonTime = parseInt(hideCloseButtonTime);
-		this.countDownCloseButton = countDownCloseButton;
-		this.didInteractTimeLimit = parseInt(didInteractTimeLimit);
-		this.didInteractTimeLimitEnabled = didInteractTimeLimitEnabled;
+	/*init: function (gameOptions,banner,banner_clickable_on_show,hide_countdown_close_button_on_first_action,hideCloseButtonTime,countDownCloseButton,didInteractTimeLimit,didInteractTimeLimitEnabled,ClickURL,MAX_PLAY_TIME,tutorial) {
+		settings = gameOptions;
+		settings.banner = banner;
+		settings.banner_clickable_on_show = banner_clickable_on_show;
+		settings.hideCloseButtonTime = parseInt(hideCloseButtonTime);
+		settings.countDownCloseButton = countDownCloseButton;
+		settings.didInteractTimeLimit = parseInt(didInteractTimeLimit);
+		settings.didInteractTimeLimitEnabled = didInteractTimeLimitEnabled;
 		this.siteLink = ClickURL;
-		this.MAX_PLAY_TIME = MAX_PLAY_TIME;
+		settings.max_play_time = MAX_PLAY_TIME;
 		if(tutorial == "false"){
-			this.inTutorial = false;
+			settings.tutorial = false;
 		}else{
-			this.inTutorial = true;
+			settings.tutorial = true;
 		}
-	},
+	},*/
 	
     create: function () {
 		this.testing = 0;
@@ -251,7 +232,7 @@ BasicGame.Game.prototype = {
 		this.menu.children[0].inputEnabled = true;
 		this.menu.children[0].events.onInputDown.add(function(){
 			if(this.menu.children[0].frame == 1 && !this.gameEnded){
-				if(gameOptions.stage2_message1 == "true" && this.firstGold){
+				if(settings.stage2_message1 && this.firstGold){
 					this.firstGold = false;
 					this.openTipBox(1);
 				}
@@ -299,7 +280,7 @@ BasicGame.Game.prototype = {
 		this.menu.children[1].inputEnabled = true;
 		this.menu.children[1].events.onInputDown.add(function(){
 			if(this.menu.children[1].frame == 1 && !this.gameEnded){
-				if(this.gameOptions.stage1_message1 == "true" && this.firstBarracks){
+				if(settings.stage1_message1 && this.firstBarracks){
 					this.firstBarracks = false;
 					this.openTipBox(2);
 				}
@@ -464,7 +445,7 @@ BasicGame.Game.prototype = {
 		this.gameOverBox.scale.setTo(2);
 		this.gameOverBox.inputEnabled = true;
 		this.gameOverBox.events.onInputUp.add(function(){
-			window.open(this.siteLink);
+			PlayableSdk.openClickUrl('gameOver');
 		},this);
 		this.gameOverBox.kill();
 		
@@ -474,7 +455,7 @@ BasicGame.Game.prototype = {
 		this.getApp.inputEnabled = true;
 		this.getApp.input.useHandCursor = true;
 		this.getApp.events.onInputDown.add(function(){
-			window.open(this.siteLink);
+			PlayableSdk.openClickUrl('gameOver_getApp');
 		},this);
 		this.getApp.kill();
 		
@@ -490,14 +471,14 @@ BasicGame.Game.prototype = {
 		this.tryAgain.kill();
 		
 		//Close Button
-		if(this.countDownCloseButton != "true"){
-			this.hideCloseButtonTime = 0;
+		if(settings.countDownCloseButton != "true"){
+			settings.hideCloseButtonTime = 0;
 		}
-		if(this.gameOptions.Property3 == "2"){
+		if(settings.Property3 == 2){
 			this.closeButton = this.add.sprite(775,25,'buttonClose');
-		}else if(this.gameOptions.Property3 == "3"){
+		}else if(settings.Property3 == 3){
 			this.closeButton = this.add.sprite(775,575,'buttonClose');
-		}else if(this.gameOptions.Property3 == "4"){
+		}else if(settings.Property3 == 4){
 			this.closeButton = this.add.sprite(25,775,'buttonClose');
 		}else{
 			this.closeButton = this.add.sprite(25,25,'buttonClose');
@@ -516,7 +497,7 @@ BasicGame.Game.prototype = {
 			}
 		},this);
 		this.closeButton.kill();
-		this.time.events.add(this.hideCloseButtonTime*1000,function(){
+		this.time.events.add(settings.hideCloseButtonTime*1000,function(){
 			this.closeButton.revive();
 		},this);
 		
@@ -526,12 +507,12 @@ BasicGame.Game.prototype = {
 		this.installNow.scale.setTo(1);
 		this.installNow.inputEnabled = true;
 		this.installNow.input.useHandCursor = true;
-		if(this.banner_clickable_on_show == "true"){
+		if(settings.banner_clickable_on_show){
 			this.installNow.events.onInputUp.add(function(){
-				window.open(this.siteLink);
+				PlayableSdk.openClickUrl('banner');
 			},this);
 		}
-		if(this.banner == "false"){
+		if(!settings.banner){
 			this.installNow.kill();
 		}
 		
@@ -592,7 +573,7 @@ BasicGame.Game.prototype = {
 		
 		this.handMotions = [this.handMove1,this.handMove2];
 		this.handAppear.onComplete.add(function(){
-			if(this.inTutorial && this.tutorialPointer){
+			if(settings.tutorial && this.tutorialPointer){
 				this.handMotions[this.stage].start();
 			}
 		},this);
@@ -600,7 +581,6 @@ BasicGame.Game.prototype = {
 			this.handDisappear.start()
 		},this);
 		this.handMove2.onComplete.add(function(){
-			
 			this.handDisappear.start()
 		},this);
 		this.handDisappear.onComplete.add(function(){
@@ -628,24 +608,21 @@ BasicGame.Game.prototype = {
 		this.enemyTimer = this.time.events.loop(5000 * this.timeMultiplier, this.enemySpawn,this);
 		
 		//Get tutorial options
-		if(this.gameOptions.install_banner_text != null){
-			this.introText = this.add.text(20,0,this.gameOptions.install_banner_text, style);	
-		}else{
-			this.introText = this.add.text(20,0,"", style);
-		}
+		this.introText = this.add.text(20,0,settings.install_banner_text, style);
+		
 		this.introText.anchor.setTo(.5,.5);
 		this.tooltipBox.addChildAt(this.introText,0);
 		
 		this.tutorialStageOptions = [];
-		this.tutorialStageOptions.push(this.gameOptions.stage1_enable);
-		this.tutorialStageOptions.push(this.gameOptions.stage1_message1);
-		this.tutorialStageOptions.push(this.gameOptions.stage1_pointer);
-		this.tutorialStageOptions.push(this.gameOptions.stage2_enable);
-		this.tutorialStageOptions.push(this.gameOptions.stage2_message1);
-		this.tutorialStageOptions.push(this.gameOptions.stage2_pointer);
+		this.tutorialStageOptions.push(settings.stage1_enable);
+		this.tutorialStageOptions.push(settings.stage1_message1);
+		this.tutorialStageOptions.push(settings.stage1_pointer);
+		this.tutorialStageOptions.push(settings.stage2_enable);
+		this.tutorialStageOptions.push(settings.stage2_message1);
+		this.tutorialStageOptions.push(settings.stage2_pointer);
 		
-		if(!this.inTutorial){
-			this.gameTimer = this.time.events.add(this.MAX_PLAY_TIME*1000,function(){
+		if(!settings.tutorial){
+			this.gameTimer = this.time.events.add(settings.max_play_time*1000,function(){
 				this.gameEnded = true;
 				this.gameOver();
 			},this);
@@ -670,9 +647,10 @@ BasicGame.Game.prototype = {
 		//Gold Text Render
 		this.goldText.setText(parseInt((this.gold/100),10));
 		//Interact Update
-		if(this.didInteractTimeLimitEnabled == "true"){
+		if(settings.didInteractTimeLimitEnabled){
 			this.interactUpdate();
 		}
+		this.firstClickUpdate();
 		
 		//Enemy update
 		this.enemyUpdate();
@@ -681,12 +659,12 @@ BasicGame.Game.prototype = {
 		this.menuUpdate();
 		
 		//Tutorial Check
-		if(this.inTutorial){
+		if(settings.tutorial){
 			//Check if first text box has played
 			this.updateTutorial();
 			this.checkTutorial();
 		
-		}else if(!this.inTutorial && !this.gameEnded){
+		}else if(!settings.tutorial && !this.gameEnded){
 			//Wall HP Update
 			this.wallUpdate();
 			
@@ -695,11 +673,23 @@ BasicGame.Game.prototype = {
 		}
     },
 	
+	firstClickUpdate: function(){
+		if(this.game.input.activePointer.isDown){
+			if(this.firstclick){
+				this.firstclick = false;
+				if(settings.hide_countdown_close_button_on_first_action){
+					this.closeButton.kill();
+				}
+			}
+		}
+	},
+	
 	interactUpdate: function(){
+		
 		if(this.game.input.activePointer.isDown){
 			this.testing = this.time.totalElapsedSeconds();
 		}
-		if(this.time.totalElapsedSeconds() - this.testing >= this.didInteractTimeLimit && !this.gameEnded && !this.inTutorial){
+		if(this.time.totalElapsedSeconds() - this.testing >= settings.didInteractTimeLimit && !this.gameEnded && !settings.tutorial){
 			this.gameEnded = true;
 			this.gameOver();
 		}
@@ -904,8 +894,8 @@ BasicGame.Game.prototype = {
 		this.hand.kill();
 		
 		//Signal game to begin
-		this.inTutorial = false;
-		this.gameTimer = this.time.events.add(this.MAX_PLAY_TIME*1000,function(){
+		settings.tutorial = false;
+		this.gameTimer = this.time.events.add(settings.max_play_time*1000,function(){
 			this.gameEnded = true;
 			this.gameOver();
 		},this);
@@ -1145,7 +1135,7 @@ BasicGame.Game.prototype = {
 	
 	enemySpawn: function() {
 		//Don't spawn if still in the tutorial
-		if(!this.inTutorial){
+		if(!settings.tutorial){
 			//Determine randomly which of the two paths to take
 			if(this.rnd.integerInRange(1,2) == 1){
 				//Left path
@@ -1308,7 +1298,7 @@ BasicGame.Game.prototype = {
 			}else{
 				continue;
 			}
-			if(this.gold/100 >= this.structures.children[i].health && this.structures.children[i].frame<2&& !this.inTutorial){
+			if(this.gold/100 >= this.structures.children[i].health && this.structures.children[i].frame<2&& !settings.tutorial){
 				if(this.firstUpgrade){
 					this.firstUpgrade = false;
 					this.openTipBox(5);
@@ -1424,13 +1414,13 @@ BasicGame.Game.prototype = {
 			this.gameOverBox.y = 450;
 			this.gameOverText.y = 330;
 			this.timeUpText.y = 330;
-			if(this.gameOptions.Property3 == 2){
+			if(settings.Property3 == 2){
 				this.closeButton.x = 125;
 				this.closeButton.y = 25;
-			}else if(this.gameOptions.Property3 == 3){
+			}else if(settings.Property3 == 3){
 				this.closeButton.x = 675;
 				this.closeButton.y = 25;
-			}else if(this.gameOptions.Property3 == 4){
+			}else if(settings.Property3 == 4){
 				this.closeButton.x = 675;
 				this.closeButton.y = 875;
 			}else{
@@ -1471,13 +1461,13 @@ BasicGame.Game.prototype = {
 			this.gameOverBox.y = 300;
 			this.gameOverText.y = 180;
 			this.timeUpText.y = 180;
-			if(this.gameOptions.Property3 == 2){
+			if(settings.Property3 == 2){
 				this.closeButton.x = 775;
 				this.closeButton.y = 25;
-			}else if(this.gameOptions.Property3 == 3){
+			}else if(settings.Property3 == 3){
 				this.closeButton.x = 775;
 				this.closeButton.y = 575;
-			}else if(this.gameOptions.Property3 == 4){
+			}else if(settings.Property3 == 4){
 				this.closeButton.x = 25;
 				this.closeButton.y = 575;
 			}else{
@@ -1582,15 +1572,18 @@ BasicGame.Game.prototype = {
 		
 		
 		this.enemyTimer = this.time.events.loop(5000 * this.timeMultiplier, this.enemySpawn,this);
-		this.gameTimer = this.time.events.add(this.MAX_PLAY_TIME*1000,function(){
+		this.gameTimer = this.time.events.add(settings.max_play_time*1000,function(){
 			this.gameEnded = true;
 			this.gameOver();
 		},this);
 		this.time.events.start();
 	},
 	
+	openLink: function(){
+	},
+	
 	render: function() {
-		/* this.game.debug.text(this.inTutorial,100,25);
+		/* this.game.debug.text(settings.tutorial,100,25);
 		this.game.debug.text(this.stage,100,50);
 		this.game.debug.text(this.tutorialStructures,100,75);
 		this.game.debug.text(this.tutorialEnable,100,100);
