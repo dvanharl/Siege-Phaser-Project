@@ -752,10 +752,10 @@ BasicGame.Game.prototype = {
 		enemy.animations.add('march',[0,1,2,3,4,5,6,7,8,9,10,11],15,true,true);
 		enemy.animations.add('attack',[12,13,14,15,16,17,18,19,20],15,true,true);
 		enemy.animations.play('attack');
-		enemy.addChild(this.add.sprite(0,-50,'healthRed'));
+		enemy.addChild(this.add.sprite(17,-25,'healthRed'));
 		enemy.children[0].scale.setTo(.5);
 		enemy.children[0].anchor.setTo(.07,.5);
-		enemy.addChild(this.add.sprite(0,-50,'healthGreen'));
+		enemy.addChild(this.add.sprite(17,-25,'healthGreen'));
 		enemy.children[1].scale.setTo(.5);
 		enemy.children[1].anchor.setTo(.07,.5);
 	},
