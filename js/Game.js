@@ -439,6 +439,7 @@ BasicGame.Game.prototype = {
 		this.blackScreen = this.add.sprite(0,0,'blackScreen');
 		this.blackScreen.alpha = 0;
 		this.blackScreen.scale.setTo(4);
+		this.blackScreen.kill();
 		
 		this.gameOverBox = this.add.sprite(400,300,'gameover');
 		this.gameOverBox.anchor.setTo(.5,.5);

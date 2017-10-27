@@ -21,7 +21,7 @@ BasicGame.Boot.prototype = {
 		//Scale game window
 		this.scale.maxHeight = window.innerHeight;
 		
-		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		this.scale.scaleMode = Phaser.ScaleManager.NONE;
 		this.scale.width = this.scale.height *(4/3);
 		
     },
